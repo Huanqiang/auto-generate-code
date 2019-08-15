@@ -1,39 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import Draging from './draging';
+import React from 'react';
 
 type IProps = {
-  parentWidth: number;
-  parentHeight: number;
-  width?: number;
-  height?: number;
+  style?: any;
 };
 
-const ZJButton: React.FC<IProps> = ({ parentWidth, parentHeight }) => {
-  const [size, setSize] = useState({ width: 100, height: 100 });
-
-  const onRescale = (addWidth: number, addHeight: number) => {
-    setSize({ width: size.width + addWidth, height: size.height + addHeight });
-  };
-
-  return (
-    <Draging
-      maxWidth={parentWidth - size.width}
-      maxHeight={parentHeight - size.height}
-      minHeight={size.height}
-      minWidth={size.width}
-      onRescale={onRescale}
-    >
-      <div
-        style={{
-          width: size.width,
-          height: size.height,
-          background: 'red',
-        }}
-      >
-        button
-      </div>
-    </Draging>
-  );
+const ZJButton: React.FC<IProps> = ({ style }) => {
+  return <div style={style}>button</div>;
 };
 
 export default ZJButton;

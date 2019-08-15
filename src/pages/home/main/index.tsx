@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import DragScaleWrapper from '../../../components/drag-scale-wrapper';
 import './index.css';
 
 type IProp = {
@@ -35,6 +36,7 @@ const Main: React.FC<IProp> = ({ componentType }) => {
       };
       setComponents([...components, component]);
     }
+    // eslint-disable-next-line
   }, [componentType]);
 
   return (
@@ -46,7 +48,12 @@ const Main: React.FC<IProp> = ({ componentType }) => {
         style={{ height: height }}
       >
         {components.map(c => (
-          <c.C key={c.id} parentWidth={width} parentHeight={height}></c.C>
+          <DragScaleWrapper
+            key={c.id}
+            parentWidth={width}
+            parentHeight={height}
+            Component={c.C}
+          ></DragScaleWrapper>
         ))}
       </div>
     </div>

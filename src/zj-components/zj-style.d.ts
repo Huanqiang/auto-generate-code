@@ -10,3 +10,7 @@ declare interface ITranslate {
   left: number;
   right: number;
 }
+
+declare type IZJStyleProps = {
+  style?: any;
+};

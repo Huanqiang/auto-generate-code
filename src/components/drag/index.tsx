@@ -1,23 +1,10 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 let startX = 0;
 let startY = 0;
 export const useDraggable = (maxWidth: number, maxHeight: number) => {
   const [point, setPoint] = useState({ left: 0, right: 0 });
   const scaleRef = useRef<HTMLDivElement>(null);
-
-  const onMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      if (e.target === scaleRef.current) {
-        return;
-      }
-      document.addEventListener('mousemove', draging);
-      document.addEventListener('mouseup', dragEnd);
-      startX = e.pageX - point.left;
-      startY = e.pageY - point.right;
-    },
-    [point]
-  );
 
   const draging = (e: MouseEvent) => {
     const movedX = e.pageX - startX;
@@ -35,6 +22,16 @@ export const useDraggable = (maxWidth: number, maxHeight: number) => {
   const dragEnd = (e: MouseEvent) => {
     document.removeEventListener('mousemove', draging);
     document.removeEventListener('mouseup', dragEnd);
+  };
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (e.target === scaleRef.current) {
+      return;
+    }
+    document.addEventListener('mousemove', draging);
+    document.addEventListener('mouseup', dragEnd);
+    startX = e.pageX - point.left;
+    startY = e.pageY - point.right;
   };
 
   return { point, scaleRef, onMouseDown };

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
 let startX = 0;
 let startY = 0;
@@ -9,16 +9,6 @@ export const useResizeScale = (
   onScale: (addWidth: number, addHeight: number) => void
 ) => {
   const [size, setSize] = useState({ width: 0, height: 0 });
-
-  const onMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      document.addEventListener('mousemove', draging);
-      document.addEventListener('mouseup', dragEnd);
-      startX = e.pageX - size.width;
-      startY = e.pageY - size.height;
-    },
-    [size]
-  );
 
   const draging = (e: MouseEvent) => {
     const addX = e.pageX - startX;
@@ -41,6 +31,13 @@ export const useResizeScale = (
     document.removeEventListener('mousemove', draging);
     document.removeEventListener('mouseup', dragEnd);
     setSize({ width: 0, height: 0 });
+  };
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    document.addEventListener('mousemove', draging);
+    document.addEventListener('mouseup', dragEnd);
+    startX = e.pageX - size.width;
+    startY = e.pageY - size.height;
   };
 
   return { size, onMouseDown };

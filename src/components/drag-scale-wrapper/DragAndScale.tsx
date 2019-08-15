@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { useResizeScale } from '../../components/scale';
-import { useDraggable } from '../../components/drag';
+import React from 'react';
+import { useResizeScale } from '../scale';
+import { useDraggable } from '../drag';
 
 declare type IDragProps = {
   onRescale: (addWidth: number, addHeight: number) => void;
@@ -12,7 +12,7 @@ declare type IDragProps = {
   children?: React.ReactNode;
 };
 
-let Drag = (props: IDragProps) => {
+let DragAndScale = (props: IDragProps) => {
   let {
     style,
     children,
@@ -56,4 +56,4 @@ let Drag = (props: IDragProps) => {
   );
 };
 
-export default Drag;
+export default DragAndScale;
