@@ -1,0 +1,22 @@
+.home-container {
+  display: flex;
+  justify-content: space-between;
+  height: calc(100vh - 50px);
+}
+
+.home-left-sider-bar {
+  min-width: 200px;
+  width: 200px;
+}
+
+.home-main-container {
+  background: burlywood;
+  width: 100%;
+  margin: 0 8px;
+}
+
+.home-right-sider-bar {
+  min-width: 200px;
+  width: 200px;
+  background: burlywood;
+}

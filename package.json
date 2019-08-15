@@ -13,7 +13,9 @@
     "prettier": "^1.18.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-redux": "^7.1.0",
     "react-scripts": "3.1.1",
+    "redux": "^4.0.4",
     "typescript": "3.5.3"
   },
   "scripts": {
@@ -25,6 +27,25 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src"
+        ],
+        "alias": {
+          "@components": "./src/zj-components"
+        },
+        "extensions": [
+          ".js",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
+    "@babel/plugin-transform-runtime"
+  ],
   "browserslist": {
     "production": [
       ">0.2%",
@@ -38,6 +59,7 @@
     ]
   },
   "devDependencies": {
+    "babel-plugin-module-resolver": "^3.2.0",
     "eslint-plugin-react-hooks": "^1.7.0"
   },
   "husky": {
