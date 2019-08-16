@@ -11,6 +11,8 @@ export const useResizeScale = (
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   const draging = (e: MouseEvent) => {
+    e.preventDefault();
+
     const addX = e.pageX - startX;
     const addY = e.pageY - startY;
     if (addX === size.width && addY === size.height) {
@@ -25,6 +27,8 @@ export const useResizeScale = (
       width: addWidth,
       height: addHeight,
     });
+
+    return false;
   };
 
   const dragEnd = (e: MouseEvent) => {

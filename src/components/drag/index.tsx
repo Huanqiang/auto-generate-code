@@ -7,6 +7,8 @@ export const useDraggable = (maxWidth: number, maxHeight: number) => {
   const scaleRef = useRef<HTMLDivElement>(null);
 
   const draging = (e: MouseEvent) => {
+    e.preventDefault();
+
     const movedX = e.pageX - startX;
     const movedY = e.pageY - startY;
     if (movedX === point.left && movedY === point.right) {
@@ -17,6 +19,8 @@ export const useDraggable = (maxWidth: number, maxHeight: number) => {
       left: movedX < 0 ? 0 : movedX > maxWidth ? maxWidth : movedX,
       right: movedY < 0 ? 0 : movedY > maxHeight ? maxHeight : movedY,
     });
+
+    return false;
   };
 
   const dragEnd = (e: MouseEvent) => {

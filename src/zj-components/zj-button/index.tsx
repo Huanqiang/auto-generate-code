@@ -1,10 +1,6 @@
 import React from 'react';
 
-type IProps = {
-  style?: any;
-};
-
-const ZJButton: React.FC<IProps> = ({ style }) => {
+const ZJButton: React.FC<IZJStyleProps> = ({ style }) => {
   return <div style={style}>button</div>;
 };
 
