@@ -4,3 +4,28 @@
   background: #f0f5fa;
   padding: 16px;
 }
+
+.download {
+  position: absolute;
+  top: 12px;
+  right: 32px;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+  background: #0090fb;
+
+  padding: 4px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+
+  cursor: pointer;
+}
+
+.download:hover {
+  background-color: #40a9ff;
+}
+
+.download:active {
+  background: #096dd9;
+}

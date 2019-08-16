@@ -1,20 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import DragScaleWrapper from '../../../components/drag-scale-wrapper';
 import './index.css';
 
 type IProp = {
-  componentType: IComponentClass | undefined;
+  components: IZJComponent[];
 };
 
 type IState = {
-  components: any[];
   width: number;
   height: number;
 };
 
-class Main extends React.PureComponent<IProp, IState> {
+let isResize = true;
+class Main extends React.Component<IProp, IState> {
   state = {
-    components: [],
     width: 0,
     height: 0,
   };
@@ -27,18 +27,14 @@ class Main extends React.PureComponent<IProp, IState> {
   }
 
   static getDerivedStateFromProps(props: IProp, state: IState) {
-    if (props.componentType !== undefined) {
-      state.components.forEach(c => {
-        c[`componentsRef_${c.id}`].current.clearSelected();
-      });
-
-      const component = {
-        id: state.components.length + 1,
-        C: props.componentType.type,
-        [`componentsRef_${state.components.length + 1}`]: React.createRef(),
-      };
-      return { components: [...state.components, component] };
+    if (isResize) {
+      isResize = false;
+      return null;
     }
+
+    props.components.forEach((c: IZJComponent) => {
+      c.ref.current && c.ref.current.clearSelected();
+    });
     return null;
   }
 
@@ -48,6 +44,7 @@ class Main extends React.PureComponent<IProp, IState> {
 
   resize = () => {
     if (this.canvasRef.current !== null) {
+      isResize = true;
       this.setState({
         width: this.canvasRef.current.clientWidth,
         height: this.canvasRef.current.clientWidth * 0.75,
@@ -56,24 +53,30 @@ class Main extends React.PureComponent<IProp, IState> {
   };
 
   clearAllComponentsSelected = () => {
-    this.state.components.forEach((c: any) => {
-      c[`componentsRef_${c.id}`].current.clearSelected();
+    this.props.components.forEach((c: IZJComponent) => {
+      c.ref.current && c.ref.current.clearSelected();
     });
   };
 
   render() {
-    const { components, width, height } = this.state;
+    const { components } = this.props;
+    const { width, height } = this.state;
     return (
       <div>
         Main
-        <div ref={this.canvasRef} className="home_main_canvas" style={{ height: height }}>
-          {components.map((c: any) => (
+        <div
+          id="MainCanvas"
+          ref={this.canvasRef}
+          className="home_main_canvas"
+          style={{ height: height }}
+        >
+          {components.map((c: IZJComponent) => (
             <DragScaleWrapper
               key={c.id}
-              ref={c[`componentsRef_${c.id}`]}
+              ref={c.ref}
               parentWidth={width}
               parentHeight={height}
-              Component={c.C}
+              Component={c.type}
               onClearAllComponentsSelected={this.clearAllComponentsSelected}
             ></DragScaleWrapper>
           ))}
@@ -83,64 +86,11 @@ class Main extends React.PureComponent<IProp, IState> {
   }
 }
 
-// const Main: React.FC<IProp> = ({ componentType }) => {
-//   const [components, setComponents] = useState<any[]>([]);
-//   const [width, setWidth] = useState(0);
-//   const [height, setHeight] = useState(0);
-//   const canvasRef = useRef<HTMLDivElement | null>(null);
+const mapStateToProps = (state: any) => ({
+  components: state.components,
+});
 
-//   const resize = () => {
-//     if (canvasRef.current !== null) {
-//       setWidth(canvasRef.current.clientWidth);
-//       setHeight(canvasRef.current.clientWidth * 0.75);
-//     }
-//   };
-
-//   useEffect(() => {
-//     resize();
-//   });
-
-//   useEffect(() => {
-//     window.addEventListener('resize', resize);
-//     return () => window.removeEventListener('resize', resize);
-//   });
-
-//   useEffect(() => {
-//     if (componentType !== undefined) {
-//       components.forEach(c => {
-//         c[`componentsRef_${c.id}`].clearSelected();
-//       });
-
-//       const component = {
-//         id: components.length + 1,
-//         C: componentType.type,
-//         [`componentsRef_${components.length + 1}`]: useRef(),
-//       };
-//       setComponents([...components, component]);
-//     }
-//     // eslint-disable-next-line
-//   }, [componentType]);
-
-//   return (
-//     <div>
-//       Main
-//       <div
-//         ref={canvasRef}
-//         className="home_main_canvas"
-//         style={{ height: height }}
-//       >
-//         {components.map(c => (
-//           <DragScaleWrapper
-//             key={c.id}
-//             ref={c[`componentsRef_${c.id}`]}
-//             parentWidth={width}
-//             parentHeight={height}
-//             Component={c.C}
-//           ></DragScaleWrapper>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-export default Main;
+export default connect(
+  mapStateToProps,
+  null
+)(Main);

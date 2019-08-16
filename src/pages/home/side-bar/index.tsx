@@ -2,21 +2,13 @@ import React from 'react';
 import SideItem from './SideItem';
 
 import './index.css';
+import { components } from '../../../mock';
 
-type Props = {
-  components: IComponentClass[];
-  onCreateComponent: (id: IComponentClass) => void;
-};
-
-const SideBar: React.FC<Props> = ({ components, onCreateComponent }) => {
+const SideBar: React.FC = () => {
   return (
     <div className="home_left-sider">
       {components.map(c => (
-        <SideItem
-          key={c.id}
-          component={c}
-          onCreateComponent={onCreateComponent}
-        ></SideItem>
+        <SideItem key={c.id} component={c}></SideItem>
       ))}
     </div>
   );

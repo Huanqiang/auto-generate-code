@@ -1,7 +1,14 @@
 import React from 'react';
 
 const ZJButton: React.FC<IZJStyleProps> = ({ style }) => {
-  return <div style={style}>button</div>;
+  const consoleX = () => {
+    console.log("i'm a button");
+  };
+  return (
+    <div style={style} onClick={consoleX}>
+      button
+    </div>
+  );
 };
 
 export default ZJButton;
