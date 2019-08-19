@@ -40,7 +40,6 @@ class DragScaleWrapper extends React.Component<IDragScaleWrapperProps, {}> {
   };
 
   onRescaleEnd = () => {
-    console.log('shuxingle ');
     this.prevAddSize = { addWidth: 0, addHeight: 0 };
   };
 
