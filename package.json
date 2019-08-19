@@ -63,7 +63,8 @@
   },
   "devDependencies": {
     "babel-plugin-module-resolver": "^3.2.0",
-    "eslint-plugin-react-hooks": "^1.7.0"
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "redux-devtools-extension": "^2.13.8"
   },
   "husky": {
     "hooks": {

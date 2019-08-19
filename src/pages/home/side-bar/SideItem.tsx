@@ -2,19 +2,18 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { addZJComponent } from '../../../store/zj-components/actions';
-import { AddZJComponent } from '../../../store/zj-components/types';
+import { AddZJComponentAction } from '../../../store/zj-components/types';
 
 import './index.css';
 
 type Props = {
   component: IComponentClass;
-  addZJComponent: (playload: AddZJComponent) => void;
+  addZJComponent: (playload: AddZJComponentAction) => void;
 };
 
 const SideItem: React.FC<Props> = ({ component, addZJComponent }) => {
   const onCreateComponent = () => {
     addZJComponent({
-      ref: React.createRef(),
       type: component.type,
     });
   };

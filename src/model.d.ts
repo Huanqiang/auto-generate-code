@@ -8,8 +8,9 @@ interface IComponentClass {
 
 interface IZJComponent {
   id: string;
-  ref: React.RefObject<any>;
   type: React.FC<IDragProps>;
+  size: { width: number; height: number };
+  isSelected: false;
 }
 
 declare var IComponentClass: IComponentClass;

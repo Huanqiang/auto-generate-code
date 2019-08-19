@@ -6,7 +6,8 @@ let startY = 0;
 export const useResizeScale = (
   minWidth: number,
   minHeight: number,
-  onScale: (addWidth: number, addHeight: number) => void
+  onScale: (addWidth: number, addHeight: number) => void,
+  onScaleEnd = () => {}
 ) => {
   const [size, setSize] = useState({ width: 0, height: 0 });
 
@@ -32,6 +33,7 @@ export const useResizeScale = (
   };
 
   const dragEnd = (e: MouseEvent) => {
+    onScaleEnd();
     document.removeEventListener('mousemove', draging);
     document.removeEventListener('mouseup', dragEnd);
     setSize({ width: 0, height: 0 });

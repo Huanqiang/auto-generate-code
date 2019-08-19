@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import DragScaleWrapper from '../../../components/drag-scale-wrapper';
+// import DragScaleWrapper from '../../../components/drag-scale-wrapper/index.hook.back';
 import './index.css';
 
 type IProp = {
@@ -13,7 +14,7 @@ type IState = {
 };
 
 let isResize = true;
-class Main extends React.Component<IProp, IState> {
+class Main extends React.PureComponent<IProp, IState> {
   state = {
     width: 0,
     height: 0,
@@ -29,12 +30,7 @@ class Main extends React.Component<IProp, IState> {
   static getDerivedStateFromProps(props: IProp, state: IState) {
     if (isResize) {
       isResize = false;
-      return null;
     }
-
-    props.components.forEach((c: IZJComponent) => {
-      c.ref.current && c.ref.current.clearSelected();
-    });
     return null;
   }
 
@@ -52,12 +48,6 @@ class Main extends React.Component<IProp, IState> {
     }
   };
 
-  clearAllComponentsSelected = () => {
-    this.props.components.forEach((c: IZJComponent) => {
-      c.ref.current && c.ref.current.clearSelected();
-    });
-  };
-
   render() {
     const { components } = this.props;
     const { width, height } = this.state;
@@ -73,11 +63,12 @@ class Main extends React.Component<IProp, IState> {
           {components.map((c: IZJComponent) => (
             <DragScaleWrapper
               key={c.id}
-              ref={c.ref}
               parentWidth={width}
               parentHeight={height}
+              id={c.id}
+              size={c.size}
+              isSelected={c.isSelected}
               Component={c.type}
-              onClearAllComponentsSelected={this.clearAllComponentsSelected}
             ></DragScaleWrapper>
           ))}
         </div>
