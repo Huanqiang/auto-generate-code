@@ -1,0 +1,29 @@
+.ZJ-tab-content-container {
+  overflow: hidden;
+}
+
+.ZJ-tab-content {
+  display: flex;
+
+  transition: transform 1.5s;
+}
+
+.ZJ-tab-panel {
+  width: 100%;
+  flex: 1 0 auto;
+}
+
+.ZJ-default-tab-item {
+  display: inline-block;
+  padding: 8px 16px;
+  border-bottom: 1px grey solid;
+}
+
+.ZJ-default-tab-item.selected {
+  border-left: 1px grey solid;
+  border-right: 1px grey solid;
+  border-top: 1px grey solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: none;
+}

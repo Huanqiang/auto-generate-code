@@ -1,27 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 let startX = 0;
 let startY = 0;
 
-export const useResizeScale = (minWidth: number, minHeight: number) => {
+export const useResizeScale = (
+  minWidth: number,
+  minHeight: number,
+  onScale = (addWidth: number, addHeight: number) => {},
+  onScaleEnd = () => {}
+) => {
   const [size, setSize] = useState({ addWidth: 0, addHeight: 0 });
-  const [isMouseDown, setIsMouseDown] = useState(false);
-
-  useEffect(() => {
-    document.addEventListener('mousemove', draging);
-    document.addEventListener('mouseup', dragEnd);
-
-    return () => {
-      document.removeEventListener('mousemove', draging);
-      document.removeEventListener('mouseup', dragEnd);
-    };
-  });
 
   const draging = (e: MouseEvent) => {
     e.preventDefault();
-    if (!isMouseDown) {
-      return;
-    }
 
     const addX = e.pageX - startX;
     const addY = e.pageY - startY;
@@ -32,23 +23,27 @@ export const useResizeScale = (minWidth: number, minHeight: number) => {
     const addWidth = addX + minWidth <= 0 ? 0 : addX;
     const addHeight = addY + minHeight <= 0 ? 0 : addY;
 
-    setSize({ addWidth, addHeight });
+    // onScale(addWidth, addHeight);
+    setSize({
+      addWidth,
+      addHeight,
+    });
     startX = e.pageX;
     startY = e.pageY;
+
     return false;
   };
 
   const dragEnd = (e: MouseEvent) => {
-    if (!isMouseDown) {
-      return;
-    }
-
-    setIsMouseDown(false);
+    // onScaleEnd();
+    document.removeEventListener('mousemove', draging);
+    document.removeEventListener('mouseup', dragEnd);
     setSize({ addWidth: 0, addHeight: 0 });
   };
 
   const onMouseDown = (e: React.MouseEvent) => {
-    setIsMouseDown(true);
+    document.addEventListener('mousemove', draging);
+    document.addEventListener('mouseup', dragEnd);
     startX = e.pageX;
     startY = e.pageY;
   };
