@@ -31,7 +31,8 @@ let DragAndScale = (props: IDragProps) => {
 
   useEffect(() => {
     onRescale(size.addWidth, size.addHeight);
-  }, [size, onRescale]);
+    // eslint-disable-next-line
+  }, [size]);
 
   return (
     <div

@@ -3,10 +3,12 @@ import {
   AddZJComponentAction,
   ChangeZJComponentSizeAction,
   ChangeZJComponentIsSelectedAction,
+  ChangeZJComponentsLevel,
   ADD_ZJ_COMPONENT,
   CHANGE_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_SIZE,
   CLEAR_ZJ_COMPONENT_ISSELETED,
+  CHANGE_ZJ_COMPONENT_LEVEL,
 } from './types';
 
 export const addZJComponent = ({ type: cType }: AddZJComponentAction) => {
@@ -50,4 +52,9 @@ export const changeZJComponentIsSelected = ({
 export const clearZJComponentIsSelected = () => ({
   type: CLEAR_ZJ_COMPONENT_ISSELETED,
   payload: {},
+});
+
+export const changeZJComponentsLevel = ({ id, index }: ChangeZJComponentsLevel) => ({
+  type: CHANGE_ZJ_COMPONENT_LEVEL,
+  payload: { id, index },
 });

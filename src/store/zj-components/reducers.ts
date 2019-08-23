@@ -3,6 +3,7 @@ import {
   CHANGE_ZJ_COMPONENT_SIZE,
   CHANGE_ZJ_COMPONENT_ISSELETED,
   CLEAR_ZJ_COMPONENT_ISSELETED,
+  CHANGE_ZJ_COMPONENT_LEVEL,
 } from './types';
 
 export const reducer = (state: IZJComponent[] = [], action: any) => {
@@ -32,6 +33,15 @@ export const reducer = (state: IZJComponent[] = [], action: any) => {
         ...component,
         isSelected: false,
       }));
+    case CHANGE_ZJ_COMPONENT_LEVEL:
+      const component = state.find(component => component.id === action.paylaod.id);
+
+      state = state.filter(component => component.id === action.paylaod.id);
+      return [
+        ...state.slice(0, action.paylaod.index),
+        component,
+        ...state.slice(action.paylaod.index),
+      ];
     default:
       break;
   }

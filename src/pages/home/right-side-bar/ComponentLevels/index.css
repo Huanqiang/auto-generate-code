@@ -1,0 +1,31 @@
+.component-level_item {
+  position: relative;
+  padding: 8px 42px 8px 16px;
+  background: white;
+}
+
+.component-level_item_drag-bar,
+.component-level_item_drag-bar::before,
+.component-level_item_drag-bar::after {
+  position: absolute;
+
+  width: 26px;
+  height: 3px;
+  background: red;
+
+  cursor: pointer;
+}
+
+.component-level_item_drag-bar {
+  top: 23px;
+  right: 16px;
+}
+
+.component-level_item_drag-bar::before {
+  content: '';
+  bottom: 6px;
+}
+.component-level_item_drag-bar::after {
+  content: '';
+  top: 6px;
+}

@@ -13,11 +13,17 @@ export interface ChangeZJComponentIsSelectedAction {
   id: string;
 }
 
+export interface ChangeZJComponentsLevel {
+  id: string;
+  index: number;
+}
+
 // Describing the different ACTION NAMES available
 export const ADD_ZJ_COMPONENT: string = 'ADD_ZJ_COMPONENT';
 export const CHANGE_ZJ_COMPONENT_SIZE: string = 'CHANGE_ZJ_COMPONENT_SIZE';
 export const CHANGE_ZJ_COMPONENT_ISSELETED: string = 'CHANGE_ZJ_COMPONENT_ISSELETED';
 export const CLEAR_ZJ_COMPONENT_ISSELETED: string = 'CLEAR_ZJ_COMPONENT_ISSELETED';
+export const CHANGE_ZJ_COMPONENT_LEVEL: string = 'CHANGE_ZJ_COMPONENT_LEVEL';
 
 export interface AddZJComponentPlayload {
   type: typeof ADD_ZJ_COMPONENT;
