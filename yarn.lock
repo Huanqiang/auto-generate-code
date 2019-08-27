@@ -8564,6 +8564,11 @@ react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
+react-movable@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-movable/-/react-movable-2.2.0.tgz#08e7de1290b4c0d847fe038debcd3cd0eff750bf"
+  integrity sha512-hYv+vJ0pMXvemsnMgiDL7TH/muk1dGg9EHXH5tM6fFzdDmXGXlu8ijMErls9zYXzdZen/ghOUHBkBv4zC9EOyQ==
+
 react-redux@^7.1.0:
   version "7.1.0"
   resolved "http://rnpm.hz.netease.com/react-redux/download/react-redux-7.1.0.tgz#72af7cf490a74acdc516ea9c1dd80e25af9ea0b2"

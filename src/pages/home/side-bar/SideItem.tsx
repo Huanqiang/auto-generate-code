@@ -15,6 +15,7 @@ const SideItem: React.FC<Props> = ({ component, addZJComponent }) => {
   const onCreateComponent = () => {
     addZJComponent({
       type: component.type,
+      customPerproties: component.customPerproties,
     });
   };
 

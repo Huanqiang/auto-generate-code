@@ -1,7 +1,9 @@
 .component-level_item {
   position: relative;
-  padding: 8px 42px 8px 16px;
+  padding: 8px 42px 8px 8px;
   background: white;
+
+  cursor: pointer;
 }
 
 .component-level_item_drag-bar,
@@ -12,8 +14,6 @@
   width: 26px;
   height: 3px;
   background: red;
-
-  cursor: pointer;
 }
 
 .component-level_item_drag-bar {

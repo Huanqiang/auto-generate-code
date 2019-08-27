@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import {
   changeZJComponentIsSelected,
   changeZJComponentSize,
-} from '../../store/zj-components/actions';
+} from '../../../../store/zj-components/actions';
 import DragAndScale from './DragAndScale';
 import {
   ChangeZJComponentIsSelectedAction,
   ChangeZJComponentSizeAction,
-} from 'store/zj-components/types';
+} from '../../../../store/zj-components/types';
 
 type IProps = {
   parentWidth: number;
@@ -17,6 +17,7 @@ type IProps = {
   Component: React.FC<{ style: any }>;
   changeZJComponentIsSelected: (playload: ChangeZJComponentIsSelectedAction) => void;
   changeZJComponentSize: (playload: ChangeZJComponentSizeAction) => void;
+  customPerproties: object;
 } & {
   id: string;
   size: { width: number; height: number };
@@ -30,13 +31,13 @@ const DragScaleWrapper: React.FC<IProps> = ({
   parentWidth,
   parentHeight,
   Component,
+  customPerproties,
   changeZJComponentIsSelected,
   changeZJComponentSize,
 }) => {
   const onRescale = useCallback(
     (addWidth: number, addHeight: number) => {
       // 实际上在某一次拖拽完成之前，本方法里的 size 都不会变，无论外部的 size 改变了多少次；
-      console.log(addWidth, addHeight);
       changeZJComponentSize({
         id,
         width: size.width + addWidth,
@@ -66,6 +67,7 @@ const DragScaleWrapper: React.FC<IProps> = ({
           height: size.height,
           background: 'red',
         }}
+        {...customPerproties}
       ></Component>
     </DragAndScale>
   );

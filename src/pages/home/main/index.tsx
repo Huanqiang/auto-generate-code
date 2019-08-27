@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import DragScaleWrapper from '../../../components/drag-scale-wrapper';
+import DragScaleWrapper from './drag-scale-wrapper';
 // import DragScaleWrapper from '../../../components/drag-scale-wrapper/index.hook.back';
 import './index.css';
 
@@ -11,6 +11,16 @@ type IProp = {
 type IState = {
   width: number;
   height: number;
+};
+
+const getCustomPerproties = (component: IZJComponent) => {
+  let newPerproties: {
+    [index: string]: string | number;
+  } = {};
+  component.customPerproties.forEach(perproty => {
+    newPerproties[perproty.property] = component[perproty.property];
+  });
+  return newPerproties;
 };
 
 let isResize = true;
@@ -52,26 +62,24 @@ class Main extends React.PureComponent<IProp, IState> {
     const { components } = this.props;
     const { width, height } = this.state;
     return (
-      <div>
-        Main
-        <div
-          id="MainCanvas"
-          ref={this.canvasRef}
-          className="home_main_canvas"
-          style={{ height: height }}
-        >
-          {components.map((c: IZJComponent) => (
-            <DragScaleWrapper
-              key={c.id}
-              parentWidth={width}
-              parentHeight={height}
-              id={c.id}
-              size={c.size}
-              isSelected={c.isSelected}
-              Component={c.type}
-            ></DragScaleWrapper>
-          ))}
-        </div>
+      <div
+        id="MainCanvas"
+        ref={this.canvasRef}
+        className="home_main_canvas"
+        style={{ height: height }}
+      >
+        {components.map((c: IZJComponent) => (
+          <DragScaleWrapper
+            key={c.id}
+            parentWidth={width}
+            parentHeight={height}
+            id={c.id}
+            size={c.size}
+            isSelected={c.isSelected}
+            Component={c.type}
+            customPerproties={getCustomPerproties(c)}
+          ></DragScaleWrapper>
+        ))}
       </div>
     );
   }

@@ -4,6 +4,7 @@ import {
   CHANGE_ZJ_COMPONENT_ISSELETED,
   CLEAR_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_LEVEL,
+  CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY,
 } from './types';
 
 export const reducer = (state: IZJComponent[] = [], action: any) => {
@@ -34,16 +35,25 @@ export const reducer = (state: IZJComponent[] = [], action: any) => {
         isSelected: false,
       }));
     case CHANGE_ZJ_COMPONENT_LEVEL:
-      const component = state.find(component => component.id === action.paylaod.id);
+      const component = state.find(component => component.id === action.payload.id);
 
-      state = state.filter(component => component.id === action.paylaod.id);
+      state = state.filter(component => component.id !== action.payload.id);
       return [
-        ...state.slice(0, action.paylaod.index),
+        ...state.slice(0, action.payload.index),
         component,
-        ...state.slice(action.paylaod.index),
+        ...state.slice(action.payload.index),
       ];
+    case CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY:
+      console.log(action);
+      return state.map(component =>
+        component.id !== action.payload.id
+          ? component
+          : {
+              ...component,
+              [action.payload.property]: action.payload.value,
+            }
+      );
     default:
-      break;
+      return state;
   }
-  return state;
 };

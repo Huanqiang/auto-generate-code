@@ -65,8 +65,8 @@ const Tabbar: React.FC<ITabbarProps> = ({
   type,
   onChangeTabs,
   onClosed,
-  onPrevClick,
-  onNextClick,
+  onPrevClick = () => {},
+  onNextClick = () => {},
 }) => {
   const tabbarRef = useRef<HTMLDivElement>(null);
   const [hasArrow, setHasArrow] = useState(false);
@@ -98,12 +98,12 @@ const Tabbar: React.FC<ITabbarProps> = ({
   }
 
   const swipeToLeft = (e: React.MouseEvent) => {
-    onPrevClick && onPrevClick(e);
+    onPrevClick(e);
     handleArrowClick(scroll + (tabbarRef.current ? tabbarRef.current.clientWidth : 0));
   };
 
   const swipeToRight = (e: React.MouseEvent) => {
-    onNextClick && onNextClick(e);
+    onNextClick(e);
     handleArrowClick(scroll - (tabbarRef.current ? tabbarRef.current.clientWidth : 0));
   };
 

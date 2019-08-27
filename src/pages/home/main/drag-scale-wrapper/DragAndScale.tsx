@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useResizeScale } from '../scale';
-import { useDraggable } from '../drag';
+import { useResizeScale } from '../../../../components/scale';
+import { useDraggable } from '../../../../components/drag';
 
 declare type IDragProps = {
   onRescale: (addWidth: number, addHeight: number) => void;

@@ -1,7 +1,18 @@
 import React from 'react';
 
-const ZJText: React.FC<IZJStyleProps> = ({ style }) => {
-  return <div style={style}>Text</div>;
+type IZJTextProps = {
+  text: string;
+  textColor: string;
+  fontSize: number;
+};
+
+const ZJText: React.FC<IZJTextProps & IZJStyleProps> = ({
+  style,
+  text,
+  textColor,
+  fontSize,
+}) => {
+  return <div style={{ ...style, color: textColor, fontSize }}>{text}</div>;
 };
 
 export default ZJText;

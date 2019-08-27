@@ -1,0 +1,15 @@
+.zjcomponent-custom-property-item {
+  margin-top: 4px;
+}
+
+.zjcomponent-custom-property-item-left {
+  display: inline-block;
+  width: 100px;
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.zjcomponent-custom-property-item-right {
+  display: inline-block;
+  width: calc(100% - 100px - 16px);
+}

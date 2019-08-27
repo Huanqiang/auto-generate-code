@@ -4,17 +4,13 @@ import './index.css';
 
 type IComponentLevelItemProps = {
   component: IZJComponent;
-  onChangeComponentLevel: (id: string) => void;
 };
 
-const ComponentLevelItem: React.FC<IComponentLevelItemProps> = ({
-  component,
-  onChangeComponentLevel,
-}) => {
+const ComponentLevelItem: React.FC<IComponentLevelItemProps> = props => {
   return (
     <div className="component-level_item">
-      {component.id}{' '}
-      <div onClick={() => onChangeComponentLevel(component.id)}>
+      <span>{props.component.id} </span>
+      <div>
         <div className="component-level_item_drag-bar"></div>
       </div>
     </div>
