@@ -31,7 +31,7 @@ const ComponentLevels: React.FC<IComponentLevelProps> = ({
       values={components}
       onChange={onChangeComponentLevel}
       renderList={({ children, props }) => (
-        <div {...props} style={{ position: `relative` }}>
+        <div {...props} style={{ position: `relative`, padding: 8 }}>
           {children}
         </div>
       )}

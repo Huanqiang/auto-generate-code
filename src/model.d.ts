@@ -1,4 +1,4 @@
-interface IComponentClass {
+declare interface IComponentClass {
   id: number;
   tag: string;
   title: string;
@@ -7,8 +7,9 @@ interface IComponentClass {
   customPerproties?: IZJComponentCustomPropertyCategory[];
 }
 
-interface IZJComponent {
+declare interface IZJComponent {
   id: string;
+  name: string;
   type: React.FC<IDragProps>;
   size: { width: number; height: number };
   isSelected: false;
@@ -16,13 +17,13 @@ interface IZJComponent {
   [index: string]: string | number | boolean | any;
 }
 
-interface IZJComponentCustomPropertyCategory {
+declare interface IZJComponentCustomPropertyCategory {
   property: string;
   name: string;
   categoty: string;
   defaultValue?: string | number | any;
 }
 
-declare var IComponentClass: IComponentClass;
-declare var IZJComponent: IZJComponent;
-declare var IZJComponentCustomPropertyCategory: IZJComponentCustomPropertyCategory;
+// declare var IComponentClass: IComponentClass;
+// declare var IZJComponent: IZJComponent;
+// declare var IZJComponentCustomPropertyCategory: IZJComponentCustomPropertyCategory;

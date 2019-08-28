@@ -4,7 +4,7 @@ import { useDraggable } from '../../../../components/drag';
 
 declare type IDragProps = {
   onRescale: (addWidth: number, addHeight: number) => void;
-  onClick: () => void;
+  onSelected: () => void;
   isSelected: boolean;
   minHeight: number;
   minWidth: number;
@@ -23,7 +23,7 @@ let DragAndScale = (props: IDragProps) => {
     minWidth,
     minHeight,
     onRescale,
-    onClick,
+    onSelected,
     isSelected,
   } = props;
   const { point, scaleRef, ...drageOther } = useDraggable(maxWidth, maxHeight);
@@ -42,7 +42,7 @@ let DragAndScale = (props: IDragProps) => {
         transform: `translate(${point.left}px, ${point.right}px)`,
       }}
       {...drageOther}
-      onClick={onClick}
+      onClick={onSelected}
     >
       {children}
       {isSelected && (

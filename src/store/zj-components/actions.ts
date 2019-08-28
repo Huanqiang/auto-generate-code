@@ -4,12 +4,14 @@ import {
   ChangeZJComponentSizeAction,
   ChangeZJComponentIsSelectedAction,
   ChangeZJComponentsLevel,
+  ChangeZJComponentsName,
   ChangeZJComponentCustomProperty,
   ADD_ZJ_COMPONENT,
   CHANGE_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_SIZE,
   CLEAR_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_LEVEL,
+  CHANGE_ZJ_COMPONENT_NAME,
   CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY,
 } from './types';
 
@@ -17,12 +19,14 @@ import { getInitPropertyValue } from '../../zj-component-perproty-item/constant'
 
 export const addZJComponent = ({
   type: cType,
+  tag,
   customPerproties,
 }: AddZJComponentAction) => {
   return {
     type: ADD_ZJ_COMPONENT,
     payload: {
       id: v4(),
+      name: tag,
       size: { width: 100, height: 35 },
       isSelected: true,
       type: cType,
@@ -66,6 +70,14 @@ export const clearZJComponentIsSelected = () => ({
 export const changeZJComponentsLevel = ({ id, index }: ChangeZJComponentsLevel) => ({
   type: CHANGE_ZJ_COMPONENT_LEVEL,
   payload: { id, index },
+});
+
+export const changeZJComponentName = ({ id, name }: ChangeZJComponentsName) => ({
+  type: CHANGE_ZJ_COMPONENT_NAME,
+  payload: {
+    id,
+    name,
+  },
 });
 
 export const changeZJComponentCustomProperty = ({

@@ -1,6 +1,7 @@
 // Describing the shape of the system's slice of state
 export interface AddZJComponentAction {
   type: React.FC;
+  tag: string;
   customPerproties?: IZJComponentCustomPropertyCategory[];
 }
 
@@ -19,6 +20,11 @@ export interface ChangeZJComponentsLevel {
   index: number;
 }
 
+export interface ChangeZJComponentsName {
+  id: string;
+  name: string;
+}
+
 export interface ChangeZJComponentCustomProperty {
   id: string;
   property: any;
@@ -31,6 +37,7 @@ export const CHANGE_ZJ_COMPONENT_SIZE: string = 'CHANGE_ZJ_COMPONENT_SIZE';
 export const CHANGE_ZJ_COMPONENT_ISSELETED: string = 'CHANGE_ZJ_COMPONENT_ISSELETED';
 export const CLEAR_ZJ_COMPONENT_ISSELETED: string = 'CLEAR_ZJ_COMPONENT_ISSELETED';
 export const CHANGE_ZJ_COMPONENT_LEVEL: string = 'CHANGE_ZJ_COMPONENT_LEVEL';
+export const CHANGE_ZJ_COMPONENT_NAME: string = 'CHANGE_ZJ_COMPONENT_NAME';
 
 export const CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY: string =
   'CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY';

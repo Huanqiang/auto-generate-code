@@ -59,7 +59,7 @@ const DragScaleWrapper: React.FC<IProps> = ({
       minWidth={size.width}
       onRescale={onRescale}
       isSelected={isSelected}
-      onClick={onSelected}
+      onSelected={onSelected}
     >
       <Component
         style={{

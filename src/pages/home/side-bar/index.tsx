@@ -8,7 +8,7 @@ const SideBar: React.FC = () => {
   return (
     <div className="home_left-sider">
       {components.map(c => (
-        <SideItem key={c.id} component={c}></SideItem>
+        <SideItem key={c.id} componentClass={c}></SideItem>
       ))}
     </div>
   );

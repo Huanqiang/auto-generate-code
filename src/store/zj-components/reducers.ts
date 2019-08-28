@@ -5,6 +5,7 @@ import {
   CLEAR_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_LEVEL,
   CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY,
+  CHANGE_ZJ_COMPONENT_NAME,
 } from './types';
 
 export const reducer = (state: IZJComponent[] = [], action: any) => {
@@ -43,8 +44,16 @@ export const reducer = (state: IZJComponent[] = [], action: any) => {
         component,
         ...state.slice(action.payload.index),
       ];
+    case CHANGE_ZJ_COMPONENT_NAME:
+      return state.map(component =>
+        component.id !== action.payload.id
+          ? component
+          : {
+              ...component,
+              name: action.payload.name,
+            }
+      );
     case CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY:
-      console.log(action);
       return state.map(component =>
         component.id !== action.payload.id
           ? component

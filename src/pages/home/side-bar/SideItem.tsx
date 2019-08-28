@@ -7,22 +7,23 @@ import { AddZJComponentAction } from '../../../store/zj-components/types';
 import './index.css';
 
 type Props = {
-  component: IComponentClass;
+  componentClass: IComponentClass;
   addZJComponent: (playload: AddZJComponentAction) => void;
 };
 
-const SideItem: React.FC<Props> = ({ component, addZJComponent }) => {
+const SideItem: React.FC<Props> = ({ componentClass, addZJComponent }) => {
   const onCreateComponent = () => {
     addZJComponent({
-      type: component.type,
-      customPerproties: component.customPerproties,
+      type: componentClass.type,
+      tag: componentClass.tag,
+      customPerproties: componentClass.customPerproties,
     });
   };
 
   return (
     <div className="home_left-sider_item" onClick={onCreateComponent}>
       <div className="home_left-sider_item_img"></div>
-      <span className="home_left-sider_item_title">{component.title}</span>
+      <span className="home_left-sider_item_title">{componentClass.title}</span>
     </div>
   );
 };
