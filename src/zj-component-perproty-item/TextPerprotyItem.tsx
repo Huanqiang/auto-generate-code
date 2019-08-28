@@ -1,4 +1,5 @@
 import React from 'react';
+import { Input } from 'antd';
 
 type ITextPerprotyItemProps = {
   property: IZJComponentCustomPropertyCategory;
@@ -12,14 +13,14 @@ const TextPerprotyItem: React.FC<ITextPerprotyItemProps> = ({
   onChange,
 }) => {
   return (
-    <input
+    <Input
       style={{ width: `100%` }}
       placeholder={`请输入属性${property.name}的值...`}
       value={value}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
         onChange(property.property, e.target.value)
       }
-    ></input>
+    ></Input>
   );
 };
 

@@ -1,4 +1,6 @@
 import React from 'react';
+import { SketchPicker } from 'react-color';
+import { Popover, Input } from 'antd';
 
 type ITextPerprotyItemProps = {
   property: IZJComponentCustomPropertyCategory;
@@ -12,14 +14,26 @@ const TextPerprotyItem: React.FC<ITextPerprotyItemProps> = ({
   onChange,
 }) => {
   return (
-    <input
-      style={{ width: `100%` }}
-      placeholder={`请输入属性${property.name}的值...`}
-      value={value}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-        onChange(property.property, e.target.value)
-      }
-    ></input>
+    <div>
+      <Popover
+        content={
+          <SketchPicker
+            color={value}
+            onChange={(color: any) => {
+              onChange(property.property, color.hex);
+            }}
+          ></SketchPicker>
+        }
+        placement="bottomRight"
+        trigger="click"
+      >
+        <Input
+          style={{ width: `100%` }}
+          placeholder={`请输入属性${property.name}的值...`}
+          value={value}
+        ></Input>
+      </Popover>
+    </div>
   );
 };
 

@@ -33,7 +33,38 @@ export const components: IComponentClass[] = [
     title: '按钮',
     type: ZJComponentClasses.ZJButton,
     img: '',
-    customPerproties: [],
+    customPerproties: [
+      {
+        property: 'text',
+        name: '按钮内容',
+        defaultValue: '按钮',
+        categoty: ZJComponentPropertyCategories.TEXT,
+      },
+      {
+        property: 'textColor',
+        name: '文字颜色',
+        defaultValue: '#000',
+        categoty: ZJComponentPropertyCategories.COLOR,
+      },
+      {
+        property: 'fontSize',
+        name: '文本大小',
+        defaultValue: 17,
+        categoty: ZJComponentPropertyCategories.NUMBER,
+      },
+      {
+        property: 'backgroundColor',
+        name: '按钮颜色',
+        defaultValue: 'transparent',
+        categoty: ZJComponentPropertyCategories.COLOR,
+      },
+      {
+        property: 'borderRadius',
+        name: '按钮圆角',
+        defaultValue: '0',
+        categoty: ZJComponentPropertyCategories.NUMBER,
+      },
+    ],
   },
   {
     id: 3,

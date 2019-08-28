@@ -23,7 +23,7 @@ export const addZJComponent = ({
     type: ADD_ZJ_COMPONENT,
     payload: {
       id: v4(),
-      size: { width: 100, height: 100 },
+      size: { width: 100, height: 35 },
       isSelected: true,
       type: cType,
       customPerproties,

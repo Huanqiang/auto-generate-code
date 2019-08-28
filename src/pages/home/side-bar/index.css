@@ -1,13 +1,16 @@
 .home_left-sider {
   display: flex;
-  justify-content: space-around;
+  padding: 8px 16px 0px 16px;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 
+.home_left-sider:after {
+  content: '';
+  flex: auto;
+}
+
 .home_left-sider_item {
-  width: 70px;
-  height: 80px;
-  padding-top: 8px;
   padding-bottom: 8px;
   text-align: center;
 }

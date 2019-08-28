@@ -7,11 +7,11 @@ const Perprotys: React.FC = () => {
   return (
     <div style={{ paddingTop: 8 }}>
       <Tabs defaultActiveKey="1" type="line">
-        <TabPanel title="层级" key="1">
-          <ComponentLevels></ComponentLevels>
-        </TabPanel>
-        <TabPanel title="属性" key="2">
+        <TabPanel title="属性" key="1">
           <ComponentProperties></ComponentProperties>
+        </TabPanel>
+        <TabPanel title="层级" key="2">
+          <ComponentLevels></ComponentLevels>
         </TabPanel>
       </Tabs>
     </div>

@@ -15,14 +15,13 @@ const ComponentProperties: React.FC<IComponentPropertiesProps> = ({
   changeCustomProperty,
 }) => {
   const onChange = (property: string, value: number | string) => {
-    console.log(value, typeof value);
     changeCustomProperty({ id: component.id, value, property });
   };
   return component ? (
     <div>
-      <h4>通用属性：</h4>
+      <h4 style={{ marginTop: 8 }}>通用属性：</h4>
       <div>这里是通用属性</div>
-      <h4>私有属性：</h4>
+      <h4 style={{ marginTop: 8 }}>私有属性：</h4>
       <div>
         {component.customPerproties.length !== 0 ? (
           component.customPerproties.map(perproty =>
@@ -34,7 +33,7 @@ const ComponentProperties: React.FC<IComponentPropertiesProps> = ({
       </div>
     </div>
   ) : (
-    <div>请选择组件</div>
+    <div>请添加组件</div>
   );
 };
 

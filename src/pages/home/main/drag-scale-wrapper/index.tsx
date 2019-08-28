@@ -65,7 +65,10 @@ const DragScaleWrapper: React.FC<IProps> = ({
         style={{
           width: size.width,
           height: size.height,
-          background: 'red',
+          border: `1px dashed grey`,
+          textAlign: `center`,
+          lineHeight: `${size.height}px`,
+          verticalAlign: `middle`,
         }}
         {...customPerproties}
       ></Component>
