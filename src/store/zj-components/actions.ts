@@ -8,6 +8,7 @@ import {
   ChangeZJComponentPositionAction,
   ChangeZJComponentCustomProperty,
   MultiSelectedZJComponentAction,
+  MoveMultiSelectedZJComponentAction,
   ADD_ZJ_COMPONENT,
   CHANGE_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_SIZE,
@@ -17,6 +18,7 @@ import {
   CHANGE_ZJ_COMPONENT_NAME,
   CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY,
   MULTI_SELECTED_ZJ_COMPONENT,
+  MOVE_MULTI_SELECTED_ZJ_COMPONENT,
 } from './types';
 
 import { getInitPropertyValue } from '../../zj-component-perproty-item/constant';
@@ -87,6 +89,21 @@ export const multiSelectedZJComponent = ({ ids }: MultiSelectedZJComponentAction
     type: MULTI_SELECTED_ZJ_COMPONENT,
     payload: {
       ids,
+    },
+  };
+};
+
+export const moveMultiSelectedZJComponentAction = ({
+  ids,
+  addTop,
+  addLeft,
+}: MoveMultiSelectedZJComponentAction) => {
+  return {
+    type: MOVE_MULTI_SELECTED_ZJ_COMPONENT,
+    payload: {
+      ids,
+      addTop,
+      addLeft,
     },
   };
 };

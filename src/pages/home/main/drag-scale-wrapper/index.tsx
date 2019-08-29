@@ -9,11 +9,13 @@ import {
   changeZJComponentSize,
   changeZJComponentPosition,
   multiSelectedZJComponent,
+  moveMultiSelectedZJComponentAction,
 } from '../../../../store/zj-components/actions';
 import {
   ChangeZJComponentIsSelectedAction,
   ChangeZJComponentSizeAction,
   ChangeZJComponentPositionAction,
+  MoveMultiSelectedZJComponentAction,
 } from '../../../../store/zj-components/types';
 
 type IProps = {
@@ -26,6 +28,9 @@ type IProps = {
   changeZJComponentIsSelected: (playload: ChangeZJComponentIsSelectedAction) => void;
   changeZJComponentSize: (playload: ChangeZJComponentSizeAction) => void;
   changeZJComponentPosition: (playload: ChangeZJComponentPositionAction) => void;
+  moveMultiSelectedZJComponentAction: (
+    playload: MoveMultiSelectedZJComponentAction
+  ) => void;
   multiSelectedZJComponent: (ids: string[]) => void;
   customPerproties: object;
 } & {
@@ -45,26 +50,55 @@ const DragScaleWrapper: React.FC<IProps> = ({
   changeZJComponentSize,
   changeZJComponentPosition,
   multiSelectedZJComponent,
+  moveMultiSelectedZJComponentAction,
 }) => {
-  const { id, size, isSelected, type: Component } = component;
-  const onRescale = useCallback(
-    (addWidth: number, addHeight: number) => {
-      // 实际上在某一次拖拽完成之前，本方法里的 size 都不会变，无论外部的 size 改变了多少次；
-      changeZJComponentSize({
-        id,
-        width: size.width + addWidth,
-        height: size.height + addHeight,
-      });
-    },
-    [id, size, changeZJComponentSize]
-  );
+  const { id, size, isSelected, type: Component, position } = component;
+  const isInMultiSelected =
+    multiSelectedComponents.filter(msc => msc.componentIds.includes(id)).length !== 0;
 
-  const onRemove = useCallback(
-    (top: number, left: number) => {
-      changeZJComponentPosition({ id, top, left });
-    },
-    [id]
-  );
+  const onRescale = (addWidth: number, addHeight: number) => {
+    const newSize = {
+      width: (addWidth + size.width <= 0 ? 0 : addWidth) + size.width,
+      height: (addHeight + size.height <= 0 ? 0 : addHeight) + size.height,
+    };
+
+    changeZJComponentSize({
+      id,
+      width: newSize.width,
+      height: newSize.height,
+    });
+  };
+
+  const onRemove = (addLeft: number, addTop: number) => {
+    const msc = multiSelectedComponents.filter(msc => msc.componentIds.includes(id));
+
+    if (msc.length !== 0) {
+      moveMultiSelectedZJComponentAction({
+        ids: msc[0].componentIds,
+        addLeft,
+        addTop,
+      });
+    } else {
+      const maxWidth = parentWidth - size.width;
+      const maxHeight = parentHeight - size.height;
+      const newPosition = {
+        left:
+          position.left + addLeft < 0
+            ? 0
+            : position.left + addLeft > maxWidth
+            ? maxWidth
+            : position.left + addLeft,
+        top:
+          position.top + addTop < 0
+            ? 0
+            : position.top + addTop > maxHeight
+            ? maxHeight
+            : position.top + addTop,
+      };
+
+      changeZJComponentPosition({ id, ...newPosition });
+    }
+  };
 
   const onSelected = () => {
     const msc = multiSelectedComponents.filter(msc => msc.componentIds.includes(id));
@@ -75,18 +109,12 @@ const DragScaleWrapper: React.FC<IProps> = ({
     }
   };
 
-  const isInMultiSelected =
-    multiSelectedComponents.filter(msc => msc.componentIds.includes(id)).length !== 0;
-
   // const onCombination = () => {};
   // const onCancelCombination = () => {};
 
   return (
     <DragAndScale
-      maxWidth={parentWidth - size.width}
-      maxHeight={parentHeight - size.height}
-      minHeight={size.height}
-      minWidth={size.width}
+      position={position}
       onRescale={onRescale}
       onMove={onRemove}
       isSelected={isSelected}
@@ -123,13 +151,16 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  changeZJComponentSize: (playload: any) => dispatch(changeZJComponentSize(playload)),
-  changeZJComponentIsSelected: (playload: any) =>
-    dispatch(changeZJComponentIsSelected(playload)),
-  changeZJComponentPosition: (playload: any) =>
-    dispatch(changeZJComponentPosition(playload)),
+  changeZJComponentSize: (payload: ChangeZJComponentSizeAction) =>
+    dispatch(changeZJComponentSize(payload)),
+  changeZJComponentIsSelected: (payload: ChangeZJComponentIsSelectedAction) =>
+    dispatch(changeZJComponentIsSelected(payload)),
+  changeZJComponentPosition: (payload: ChangeZJComponentPositionAction) =>
+    dispatch(changeZJComponentPosition(payload)),
   multiSelectedZJComponent: (ids: string[]) =>
     dispatch(multiSelectedZJComponent({ ids })),
+  moveMultiSelectedZJComponentAction: (payload: MoveMultiSelectedZJComponentAction) =>
+    dispatch(moveMultiSelectedZJComponentAction(payload)),
 });
 
 export default connect(

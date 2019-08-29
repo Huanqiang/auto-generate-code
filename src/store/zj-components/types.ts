@@ -41,6 +41,12 @@ export interface ChangeZJComponentCustomProperty {
   value: any;
 }
 
+export interface MoveMultiSelectedZJComponentAction {
+  ids: string[];
+  addTop: number;
+  addLeft: number;
+}
+
 // Describing the different ACTION NAMES available
 export const ADD_ZJ_COMPONENT: string = 'ADD_ZJ_COMPONENT';
 export const CHANGE_ZJ_COMPONENT_SIZE: string = 'CHANGE_ZJ_COMPONENT_SIZE';
@@ -52,6 +58,8 @@ export const CHANGE_ZJ_COMPONENT_NAME: string = 'CHANGE_ZJ_COMPONENT_NAME';
 export const MULTI_SELECTED_ZJ_COMPONENT: string = 'MULTI_SELECTED_ZJ_COMPONENT';
 export const CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY: string =
   'CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY';
+export const MOVE_MULTI_SELECTED_ZJ_COMPONENT: string =
+  'MOVE_MULTI_SELECTED_ZJ_COMPONENT';
 
 export interface AddZJComponentPlayload {
   type: typeof ADD_ZJ_COMPONENT;

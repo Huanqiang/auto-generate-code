@@ -8,9 +8,10 @@ import {
   CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY,
   CHANGE_ZJ_COMPONENT_NAME,
   MULTI_SELECTED_ZJ_COMPONENT,
+  MOVE_MULTI_SELECTED_ZJ_COMPONENT,
 } from './types';
 
-export const reducer = (state: IMultiSelectedComponents[] = [], action: any) => {
+export const reducer = (state: IZJComponent[] = [], action: any) => {
   switch (action.type) {
     case ADD_ZJ_COMPONENT:
       state = state.map(component => ({
@@ -35,6 +36,18 @@ export const reducer = (state: IMultiSelectedComponents[] = [], action: any) => 
               ...component,
               position: { left: action.payload.left, top: action.payload.top },
             }
+      );
+    case MOVE_MULTI_SELECTED_ZJ_COMPONENT:
+      return state.map(component =>
+        action.payload.ids.includes(component.id)
+          ? {
+              ...component,
+              position: {
+                left: component.position.left + action.payload.addLeft,
+                top: component.position.top + action.payload.addTop,
+              },
+            }
+          : component
       );
     case CHANGE_ZJ_COMPONENT_ISSELETED:
       return state.map(component => ({

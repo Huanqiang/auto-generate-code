@@ -1,10 +1,8 @@
 import { v4 } from 'node-uuid';
 import {
-  MoveMultiSelectedZJComponentAction,
   AddMultiSelectedZJComponentAction,
   DeletedMultiSelectedZJComponentAction,
   ADD_MULTI_SELECTED_ZJ_COMPONENT,
-  MOVE_MULTI_SELECTED_ZJ_COMPONENT,
   DELETED_MULTI_SELECTED_ZJ_COMPONENT,
 } from './types';
 
@@ -27,21 +25,6 @@ export const deletedMultiSelectedZJComponent = ({
     type: DELETED_MULTI_SELECTED_ZJ_COMPONENT,
     payload: {
       componentId,
-    },
-  };
-};
-
-export const moveMultiSelectedZJComponentAction = ({
-  id,
-  top,
-  left,
-}: MoveMultiSelectedZJComponentAction) => {
-  return {
-    type: MOVE_MULTI_SELECTED_ZJ_COMPONENT,
-    payload: {
-      id,
-      top,
-      left,
     },
   };
 };

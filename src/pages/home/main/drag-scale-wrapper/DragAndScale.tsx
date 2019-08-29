@@ -1,44 +1,37 @@
-import React, { useEffect } from 'react';
-import { useResizeScale } from '../../../../components/scale';
-import { useDraggable } from '../../../../components/drag';
+import React, { useEffect, useRef } from 'react';
+import { useMouseMove } from '../../../../components/mouse-move';
 
 declare type IDragProps = {
   onRescale: (addWidth: number, addHeight: number) => void;
   onSelected: () => void;
   onMove: (top: number, left: number) => void;
+  position: { top: number; left: number };
   isSelected: boolean;
-  minHeight: number;
-  minWidth: number;
-  maxWidth: number;
-  maxHeight: number;
   style?: any;
   children?: React.ReactNode;
 };
 
 let DragAndScale = (props: IDragProps) => {
-  let {
-    style,
-    children,
-    maxWidth,
-    maxHeight,
-    minWidth,
-    minHeight,
-    onRescale,
-    onSelected,
-    onMove,
-    isSelected,
-  } = props;
-  const { point, scaleRef, ...drageOther } = useDraggable(maxWidth, maxHeight);
-  const { size, ...scaleOther } = useResizeScale(minWidth, minHeight);
+  let { style, position, children, onRescale, onSelected, onMove, isSelected } = props;
+  const { move: size, onMouseDown: onScaling } = useMouseMove();
+  const { move: point, onMouseDown: onMouseDraging } = useMouseMove();
+  const scaleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    onRescale(size.addWidth, size.addHeight);
-    // eslint-disable-next-line
+    onRescale(size.addX, size.addY);
   }, [size]);
 
   useEffect(() => {
-    onMove(point.top, point.left);
+    onMove(point.addX, point.addY);
   }, [point]);
+
+  const onDraging = (e: React.MouseEvent) => {
+    onSelected();
+    if (e.target === scaleRef.current) {
+      return;
+    }
+    onMouseDraging(e);
+  };
 
   return (
     <div
@@ -46,10 +39,9 @@ let DragAndScale = (props: IDragProps) => {
         ...style,
         position: `absolute`,
         userSelect: `none`,
-        transform: `translate(${point.left}px, ${point.top}px)`,
+        transform: `translate(${position.left}px, ${position.top}px)`,
       }}
-      {...drageOther}
-      onClick={onSelected}
+      onMouseDown={onDraging}
     >
       {children}
       {isSelected && (
@@ -64,7 +56,7 @@ let DragAndScale = (props: IDragProps) => {
             right: -5,
             ...style,
           }}
-          {...scaleOther}
+          onMouseDown={onScaling}
         ></div>
       )}
     </div>

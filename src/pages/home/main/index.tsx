@@ -151,15 +151,17 @@ class Main extends React.PureComponent<IProp, IState> {
         component =>
           component.position.top > top &&
           component.position.left > left &&
-          component.size.width < width &&
-          component.size.height < height
+          component.position.left + component.size.width < left + width &&
+          component.position.top + component.size.height < top + height
       )
       .map(c => c.id);
 
-    if (multiSelectedIds.length > 1) {
+    if (multiSelectedIds.length !== 0) {
       //  将选择框内的组件设置为被选中状态
       this.props.multiSelectedZJComponent(multiSelectedIds);
-      this.setState({ multiSelectedIds, needMultiSelecteing: true });
+      if (multiSelectedIds.length > 1) {
+        this.setState({ multiSelectedIds, needMultiSelecteing: true });
+      }
     }
 
     this.setState({
@@ -177,18 +179,15 @@ class Main extends React.PureComponent<IProp, IState> {
     e.preventDefault();
     const { needMultiSelecteing, multiSelectedIds } = this.state;
     if (needMultiSelecteing) {
+      this.setState({ needMultiSelecteing: false });
       this.props.addMultiSelectedZJComponent(multiSelectedIds);
       this.props.multiSelectedZJComponent(multiSelectedIds);
-      this.setState({ needMultiSelecteing: false });
     }
-    // return false;
   };
 
   onCancelCombine = (e: MouseEvent, componentId: string) => {
     e.preventDefault();
-    // document.getSelection().remove
     this.props.deletedMultiSelectedZJComponent(componentId);
-    // return false;
   };
 
   render() {
