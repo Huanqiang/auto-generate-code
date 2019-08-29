@@ -39,7 +39,7 @@ const ComponentProperties: React.FC<IComponentPropertiesProps> = ({
           component.customPerproties.map(perproty =>
             initPerportyItem(
               perproty,
-              component[perproty.property],
+              component.config[perproty.property],
               onChangeCustomProperty
             )
           )
@@ -54,7 +54,8 @@ const ComponentProperties: React.FC<IComponentPropertiesProps> = ({
 };
 
 const mapStateToProps = (state: any) => ({
-  component: state.components.filter((c: any) => c.isSelected)[0] || undefined,
+  component:
+    state.components.filter((c: any) => c.id === state.activeZJComponent)[0] || undefined,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

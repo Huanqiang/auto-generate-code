@@ -39,7 +39,7 @@ const getCustomPerproties = (component: IZJComponent) => {
     [index: string]: string | number;
   } = {};
   component.customPerproties.forEach(perproty => {
-    newPerproties[perproty.property] = component[perproty.property];
+    newPerproties[perproty.property] = component.config[perproty.property];
   });
   return newPerproties;
 };
@@ -221,8 +221,23 @@ class Main extends React.PureComponent<IProp, IState> {
             onCombine={this.onCombine}
             onCancelCombine={this.onCancelCombine}
             customPerproties={getCustomPerproties(c)}
-          ></DragScaleWrapper>
+          >
+            {c.children &&
+              c.children.map((child: IZJComponent) => (
+                <DragScaleWrapper
+                  key={child.id}
+                  parentWidth={c.size.width}
+                  parentHeight={c.size.height}
+                  component={child}
+                  needMultiSelecteing={needMultiSelecteing}
+                  onCombine={this.onCombine}
+                  onCancelCombine={this.onCancelCombine}
+                  customPerproties={getCustomPerproties(child)}
+                ></DragScaleWrapper>
+              ))}
+          </DragScaleWrapper>
         ))}
+        {/* 多选框 */}
         <div
           className=""
           style={{

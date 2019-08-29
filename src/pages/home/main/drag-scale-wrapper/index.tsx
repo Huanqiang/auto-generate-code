@@ -17,6 +17,7 @@ import {
   ChangeZJComponentPositionAction,
   MoveMultiSelectedZJComponentAction,
 } from '../../../../store/zj-components/types';
+import { setActiveZJComponent } from '../../../../store/active-zj-component/actions';
 
 type IProps = {
   parentWidth: number;
@@ -26,6 +27,7 @@ type IProps = {
   onCombine: (event: MouseEvent) => void;
   onCancelCombine: (event: MouseEvent, componentId: string) => void;
   changeZJComponentIsSelected: (playload: ChangeZJComponentIsSelectedAction) => void;
+  setActiveZJComponent: (id: string) => void;
   changeZJComponentSize: (playload: ChangeZJComponentSizeAction) => void;
   changeZJComponentPosition: (playload: ChangeZJComponentPositionAction) => void;
   moveMultiSelectedZJComponentAction: (
@@ -47,6 +49,7 @@ const DragScaleWrapper: React.FC<IProps> = ({
   onCombine,
   onCancelCombine,
   changeZJComponentIsSelected,
+  setActiveZJComponent,
   changeZJComponentSize,
   changeZJComponentPosition,
   multiSelectedZJComponent,
@@ -102,15 +105,14 @@ const DragScaleWrapper: React.FC<IProps> = ({
 
   const onSelected = () => {
     const msc = multiSelectedComponents.filter(msc => msc.componentIds.includes(id));
+    setActiveZJComponent(id);
+
     if (msc.length !== 0) {
       multiSelectedZJComponent(msc[0].componentIds);
     } else {
       changeZJComponentIsSelected({ id });
     }
   };
-
-  // const onCombination = () => {};
-  // const onCancelCombination = () => {};
 
   return (
     <DragAndScale
@@ -155,6 +157,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(changeZJComponentSize(payload)),
   changeZJComponentIsSelected: (payload: ChangeZJComponentIsSelectedAction) =>
     dispatch(changeZJComponentIsSelected(payload)),
+  setActiveZJComponent: (id: string) => dispatch(setActiveZJComponent({ id })),
   changeZJComponentPosition: (payload: ChangeZJComponentPositionAction) =>
     dispatch(changeZJComponentPosition(payload)),
   multiSelectedZJComponent: (ids: string[]) =>

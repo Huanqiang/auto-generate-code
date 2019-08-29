@@ -38,7 +38,10 @@ export const addZJComponent = ({
       isSelected: true,
       type: cType,
       customPerproties,
-      ...initCustomProperties(customPerproties),
+      children: [],
+      config: {
+        ...initCustomProperties(customPerproties),
+      },
     },
   };
 };

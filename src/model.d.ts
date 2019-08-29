@@ -14,8 +14,11 @@ declare interface IZJComponent {
   size: { width: number; height: number };
   position: { top: number; left: number };
   isSelected: false;
+  children: IZJComponent[];
+  config: {
+    [index: string]: string | number | boolean | any;
+  };
   customPerproties: IZJComponentCustomPropertyCategory[];
-  [index: string]: string | number | boolean | any;
 }
 
 declare interface IMultiSelectedComponents {

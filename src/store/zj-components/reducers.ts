@@ -88,7 +88,10 @@ export const reducer = (state: IZJComponent[] = [], action: any) => {
           ? component
           : {
               ...component,
-              [action.payload.property]: action.payload.value,
+              config: {
+                ...component.config,
+                [action.payload.property]: action.payload.value,
+              },
             }
       );
     default:
