@@ -1,4 +1,5 @@
 .home_main_canvas {
+  position: relative;
   margin: 8px 16px;
   border: 1px dashed grey;
 }

@@ -1,16 +1,37 @@
 import React from 'react';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import DragScaleWrapper from './drag-scale-wrapper';
-// import DragScaleWrapper from '../../../components/drag-scale-wrapper/index.hook.back';
+import {
+  clearZJComponentIsSelected,
+  multiSelectedZJComponent,
+} from '../../../store/zj-components/actions';
+import {
+  addMultiSelectedZJComponent,
+  deletedMultiSelectedZJComponent,
+} from '../../../store/multi-selected-zj-components/actions';
 import './index.css';
 
 type IProp = {
   components: IZJComponent[];
+  clearZJComponentIsSelected: () => void;
+  multiSelectedZJComponent: (ids: string[]) => void;
+  addMultiSelectedZJComponent: (ids: string[]) => void;
+  deletedMultiSelectedZJComponent: (componentId: string) => void;
 };
 
 type IState = {
   width: number;
   height: number;
+  multiSelectedCover: {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  };
+  multiSelectedIds: string[];
+  needMultiSelecteing: boolean;
+  isMultiSelecteing: boolean;
 };
 
 const getCustomPerproties = (component: IZJComponent) => {
@@ -28,6 +49,15 @@ class Main extends React.PureComponent<IProp, IState> {
   state = {
     width: 0,
     height: 0,
+    multiSelectedCover: {
+      top: 0,
+      left: 0,
+      width: 0,
+      height: 0,
+    },
+    multiSelectedIds: [],
+    needMultiSelecteing: false,
+    isMultiSelecteing: false,
   };
 
   canvasRef = React.createRef<HTMLDivElement>();
@@ -58,28 +88,154 @@ class Main extends React.PureComponent<IProp, IState> {
     }
   };
 
+  onClearAllComponentSelected = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // 判断是点击了当前画布还是组件元素
+    if (e.target === this.canvasRef.current) {
+      this.props.clearZJComponentIsSelected();
+    }
+  };
+
+  multiSelectStart = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.persist();
+    e.preventDefault();
+    e.stopPropagation();
+    this.onClearAllComponentSelected(e);
+    if (e.target === this.canvasRef.current) {
+      this.setState({
+        needMultiSelecteing: false,
+        isMultiSelecteing: true,
+        multiSelectedCover: {
+          width: 0,
+          height: 0,
+          left: e.pageX - this.canvasRef.current!.offsetLeft,
+          top: e.pageY - this.canvasRef.current!.offsetTop,
+        },
+      });
+    }
+  };
+
+  multiSelecting = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.persist();
+    e.preventDefault();
+    e.stopPropagation();
+    if (this.state.isMultiSelecteing) {
+      const offset = {
+        left: e.pageX - this.canvasRef.current!.offsetLeft,
+        top: e.pageY - this.canvasRef.current!.offsetTop,
+      };
+
+      this.setState(prevState => ({
+        multiSelectedCover: {
+          ...prevState.multiSelectedCover,
+          width: offset.left - prevState.multiSelectedCover.left,
+          height: offset.top - prevState.multiSelectedCover.top,
+        },
+      }));
+    }
+  };
+
+  multiSelectEnd = (e: React.MouseEvent<HTMLDivElement>) => {
+    const {
+      isMultiSelecteing,
+      multiSelectedCover: { top, left, width, height },
+    } = this.state;
+
+    if (!isMultiSelecteing) {
+      return;
+    }
+
+    const multiSelectedIds = this.props.components
+      .filter(
+        component =>
+          component.position.top > top &&
+          component.position.left > left &&
+          component.size.width < width &&
+          component.size.height < height
+      )
+      .map(c => c.id);
+
+    if (multiSelectedIds.length > 1) {
+      //  将选择框内的组件设置为被选中状态
+      this.props.multiSelectedZJComponent(multiSelectedIds);
+      this.setState({ multiSelectedIds, needMultiSelecteing: true });
+    }
+
+    this.setState({
+      isMultiSelecteing: false,
+      multiSelectedCover: {
+        width: 0,
+        height: 0,
+        left: 0,
+        top: 0,
+      },
+    });
+  };
+
+  onCombine = (e: MouseEvent) => {
+    e.preventDefault();
+    const { needMultiSelecteing, multiSelectedIds } = this.state;
+    if (needMultiSelecteing) {
+      this.props.addMultiSelectedZJComponent(multiSelectedIds);
+      this.props.multiSelectedZJComponent(multiSelectedIds);
+      this.setState({ needMultiSelecteing: false });
+    }
+    // return false;
+  };
+
+  onCancelCombine = (e: MouseEvent, componentId: string) => {
+    e.preventDefault();
+    // document.getSelection().remove
+    this.props.deletedMultiSelectedZJComponent(componentId);
+    // return false;
+  };
+
   render() {
     const { components } = this.props;
-    const { width, height } = this.state;
+    const {
+      width,
+      height,
+      isMultiSelecteing,
+      multiSelectedCover,
+      needMultiSelecteing,
+    } = this.state;
     return (
       <div
         id="MainCanvas"
         ref={this.canvasRef}
         className="home_main_canvas"
-        style={{ height: height }}
+        style={{ height }}
+        // onClick={}
+        onMouseDown={this.multiSelectStart}
+        onMouseMove={this.multiSelecting}
+        onMouseUp={this.multiSelectEnd}
+        onMouseLeave={this.multiSelectEnd}
       >
         {components.map((c: IZJComponent) => (
           <DragScaleWrapper
             key={c.id}
             parentWidth={width}
             parentHeight={height}
-            id={c.id}
-            size={c.size}
-            isSelected={c.isSelected}
-            Component={c.type}
+            component={c}
+            needMultiSelecteing={needMultiSelecteing}
+            onCombine={this.onCombine}
+            onCancelCombine={this.onCancelCombine}
             customPerproties={getCustomPerproties(c)}
           ></DragScaleWrapper>
         ))}
+        <div
+          className=""
+          style={{
+            display: isMultiSelecteing ? 'block' : 'none',
+            border: `1px dashed #C2C2C2`,
+            backgroundColor: `rgba(194, 194, 194, 0.4)`,
+            position: 'absolute',
+            transform: `translate(${multiSelectedCover.left}px, ${multiSelectedCover.top}px)`,
+            width: multiSelectedCover.width,
+            height: multiSelectedCover.height,
+          }}
+        ></div>
       </div>
     );
   }
@@ -89,7 +245,17 @@ const mapStateToProps = (state: any) => ({
   components: state.components,
 });
 
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  clearZJComponentIsSelected: () => dispatch(clearZJComponentIsSelected()),
+  multiSelectedZJComponent: (ids: string[]) =>
+    dispatch(multiSelectedZJComponent({ ids })),
+  addMultiSelectedZJComponent: (ids: string[]) =>
+    dispatch(addMultiSelectedZJComponent({ componentIds: ids })),
+  deletedMultiSelectedZJComponent: (componentId: string) =>
+    dispatch(deletedMultiSelectedZJComponent({ componentId })),
+});
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Main);

@@ -1,10 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { reducer as ZJComponentsReducer } from './zj-components/reducers';
+import { reducer as MultiZJComponentsReducer } from './multi-selected-zj-components/reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const configStore = () => {
   const reducers = combineReducers({
     components: ZJComponentsReducer,
+    multiSelectedComponents: MultiZJComponentsReducer,
   });
 
   const middlewares: any[] = [];

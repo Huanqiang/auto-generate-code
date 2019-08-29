@@ -5,6 +5,7 @@ import { useDraggable } from '../../../../components/drag';
 declare type IDragProps = {
   onRescale: (addWidth: number, addHeight: number) => void;
   onSelected: () => void;
+  onMove: (top: number, left: number) => void;
   isSelected: boolean;
   minHeight: number;
   minWidth: number;
@@ -24,6 +25,7 @@ let DragAndScale = (props: IDragProps) => {
     minHeight,
     onRescale,
     onSelected,
+    onMove,
     isSelected,
   } = props;
   const { point, scaleRef, ...drageOther } = useDraggable(maxWidth, maxHeight);
@@ -34,12 +36,17 @@ let DragAndScale = (props: IDragProps) => {
     // eslint-disable-next-line
   }, [size]);
 
+  useEffect(() => {
+    onMove(point.top, point.left);
+  }, [point]);
+
   return (
     <div
       style={{
         ...style,
         position: `absolute`,
-        transform: `translate(${point.left}px, ${point.right}px)`,
+        userSelect: `none`,
+        transform: `translate(${point.left}px, ${point.top}px)`,
       }}
       {...drageOther}
       onClick={onSelected}

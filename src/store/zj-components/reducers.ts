@@ -1,14 +1,16 @@
 import {
   ADD_ZJ_COMPONENT,
   CHANGE_ZJ_COMPONENT_SIZE,
+  CHANGE_ZJ_COMPONENT_POSITION,
   CHANGE_ZJ_COMPONENT_ISSELETED,
   CLEAR_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_LEVEL,
   CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY,
   CHANGE_ZJ_COMPONENT_NAME,
+  MULTI_SELECTED_ZJ_COMPONENT,
 } from './types';
 
-export const reducer = (state: IZJComponent[] = [], action: any) => {
+export const reducer = (state: IMultiSelectedComponents[] = [], action: any) => {
   switch (action.type) {
     case ADD_ZJ_COMPONENT:
       state = state.map(component => ({
@@ -25,10 +27,24 @@ export const reducer = (state: IZJComponent[] = [], action: any) => {
               size: { width: action.payload.width, height: action.payload.height },
             }
       );
+    case CHANGE_ZJ_COMPONENT_POSITION:
+      return state.map(component =>
+        component.id !== action.payload.id
+          ? component
+          : {
+              ...component,
+              position: { left: action.payload.left, top: action.payload.top },
+            }
+      );
     case CHANGE_ZJ_COMPONENT_ISSELETED:
       return state.map(component => ({
         ...component,
         isSelected: component.id === action.payload.id,
+      }));
+    case MULTI_SELECTED_ZJ_COMPONENT:
+      return state.map(component => ({
+        ...component,
+        isSelected: action.payload.ids.includes(component.id),
       }));
     case CLEAR_ZJ_COMPONENT_ISSELETED:
       return state.map(component => ({

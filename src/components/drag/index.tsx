@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 let startX = 0;
 let startY = 0;
 export const useDraggable = (maxWidth: number, maxHeight: number) => {
-  const [point, setPoint] = useState({ left: 0, right: 0 });
+  const [point, setPoint] = useState({ left: 0, top: 0 });
   const scaleRef = useRef<HTMLDivElement>(null);
 
   const draging = (e: MouseEvent) => {
@@ -11,13 +11,13 @@ export const useDraggable = (maxWidth: number, maxHeight: number) => {
 
     const movedX = e.pageX - startX;
     const movedY = e.pageY - startY;
-    if (movedX === point.left && movedY === point.right) {
+    if (movedX === point.left && movedY === point.top) {
       return;
     }
 
     setPoint({
       left: movedX < 0 ? 0 : movedX > maxWidth ? maxWidth : movedX,
-      right: movedY < 0 ? 0 : movedY > maxHeight ? maxHeight : movedY,
+      top: movedY < 0 ? 0 : movedY > maxHeight ? maxHeight : movedY,
     });
 
     return false;
@@ -35,7 +35,7 @@ export const useDraggable = (maxWidth: number, maxHeight: number) => {
     document.addEventListener('mousemove', draging);
     document.addEventListener('mouseup', dragEnd);
     startX = e.pageX - point.left;
-    startY = e.pageY - point.right;
+    startY = e.pageY - point.top;
   };
 
   return { point, scaleRef, onMouseDown };

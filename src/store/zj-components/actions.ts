@@ -5,14 +5,18 @@ import {
   ChangeZJComponentIsSelectedAction,
   ChangeZJComponentsLevel,
   ChangeZJComponentsName,
+  ChangeZJComponentPositionAction,
   ChangeZJComponentCustomProperty,
+  MultiSelectedZJComponentAction,
   ADD_ZJ_COMPONENT,
   CHANGE_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_SIZE,
+  CHANGE_ZJ_COMPONENT_POSITION,
   CLEAR_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_LEVEL,
   CHANGE_ZJ_COMPONENT_NAME,
   CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY,
+  MULTI_SELECTED_ZJ_COMPONENT,
 } from './types';
 
 import { getInitPropertyValue } from '../../zj-component-perproty-item/constant';
@@ -28,6 +32,7 @@ export const addZJComponent = ({
       id: v4(),
       name: tag,
       size: { width: 100, height: 35 },
+      position: { left: 0, top: 0 },
       isSelected: true,
       type: cType,
       customPerproties,
@@ -51,6 +56,21 @@ export const changeZJComponentSize = ({
   };
 };
 
+export const changeZJComponentPosition = ({
+  id,
+  top,
+  left,
+}: ChangeZJComponentPositionAction) => {
+  return {
+    type: CHANGE_ZJ_COMPONENT_POSITION,
+    payload: {
+      id,
+      top,
+      left,
+    },
+  };
+};
+
 export const changeZJComponentIsSelected = ({
   id,
 }: ChangeZJComponentIsSelectedAction) => {
@@ -58,6 +78,15 @@ export const changeZJComponentIsSelected = ({
     type: CHANGE_ZJ_COMPONENT_ISSELETED,
     payload: {
       id,
+    },
+  };
+};
+
+export const multiSelectedZJComponent = ({ ids }: MultiSelectedZJComponentAction) => {
+  return {
+    type: MULTI_SELECTED_ZJ_COMPONENT,
+    payload: {
+      ids,
     },
   };
 };

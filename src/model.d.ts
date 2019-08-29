@@ -12,9 +12,15 @@ declare interface IZJComponent {
   name: string;
   type: React.FC<IDragProps>;
   size: { width: number; height: number };
+  position: { top: number; left: number };
   isSelected: false;
   customPerproties: IZJComponentCustomPropertyCategory[];
   [index: string]: string | number | boolean | any;
+}
+
+declare interface IMultiSelectedComponents {
+  id: string;
+  componentIds: string[];
 }
 
 declare interface IZJComponentCustomPropertyCategory {
