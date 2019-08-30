@@ -1,44 +1,21 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 一个拖拽布局的DEMO
 
-## Available Scripts
+一个拖拽布局的Demo，完成布局后能生成一个自定义的 React 组件
 
-In the project directory, you can run:
+### 功能
 
-### `npm start`
+[x] 完成自定义组件的移动和大小改变；
+[x] 完成自定义组件的自定义属性配置；
+[x] 支持自定义组件，通过配置自定义属性即可便捷修改其属性；
+[x] 完成多选和右键合并功能；
+[x] 完成组件叠层切换的功能(即解决组件被遮挡问题)；
+[x] 完成Tabs组件（实现 antd Tabs 的大部分接口）；
+[ ] 待新增父子节点层次结构；
+[ ] 待新增多选组建后无需合并即可一起移动的操作；
+[ ] 待新增导出组件功能；
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 运行
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```shell
+npm start # 启动程序
+```
