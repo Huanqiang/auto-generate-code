@@ -26,45 +26,31 @@ const ComponentLevels: React.FC<IComponentLevelProps> = ({
     changeComponentLevel(components[oldIndex].id, newIndex);
   };
 
-  const firstLevelComponents = components.filter(c => c.parent === '');
-
-  const renderTree = (
-    curLevelComponents: IZJComponent[],
-    components: IZJComponent[],
-    level: number
-  ) => {
-    return (
-      <List
-        values={curLevelComponents}
-        onChange={onChangeComponentLevel}
-        renderList={({ children, props }) => (
-          <div
-            {...props}
-            style={{ position: `relative`, padding: 8, paddingLeft: level * 8 }}
-          >
-            {children}
-          </div>
-        )}
-        renderItem={({ value, props }) => (
-          <li {...props} style={{ ...props.style, listStyleType: 'none' }}>
-            {value.children && value.children.length > 0 ? (
-              renderTree(
-                components.filter(c => value.children.includes(c.id)),
-                components,
-                level + 1
-              )
-            ) : (
-              <ComponentLevelItem component={value}></ComponentLevelItem>
-            )}
-          </li>
-        )}
-      />
-    );
-  };
-
   return components.length !== 0 ? (
-    renderTree(firstLevelComponents, components, 1)
+    <List
+      values={components}
+      onChange={onChangeComponentLevel}
+      renderList={({ children, props }) => (
+        <div {...props} style={{ position: `relative`, padding: 8 }}>
+          {children}
+        </div>
+      )}
+      renderItem={({ value, props }) => (
+        <li {...props} style={{ ...props.style, listStyleType: 'none' }}>
+          <ComponentLevelItem component={value}>{`${value}`}</ComponentLevelItem>
+        </li>
+      )}
+    />
   ) : (
+    // <>
+    //   {components.map(component => (
+    //     <ComponentLevelItem
+    //       key={component.id}
+    //       component={component}
+    //       onChangeComponentLevel={onChangeComponentLevel}
+    //     ></ComponentLevelItem>
+    //   ))}
+    // </>
     <div>请添加组件</div>
   );
 };

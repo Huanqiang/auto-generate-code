@@ -78,6 +78,9 @@ class Main extends React.PureComponent<IProp, IState> {
     window.removeEventListener('resize', this.resize);
   }
 
+  /**
+   * 画布大小变化时，自动计算height
+   */
   resize = () => {
     if (this.canvasRef.current !== null) {
       isResize = true;
@@ -88,20 +91,28 @@ class Main extends React.PureComponent<IProp, IState> {
     }
   };
 
+  /**
+   * 取消所有的自定义选中状态
+   */
   onClearAllComponentSelected = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     // 判断是点击了当前画布还是组件元素
     if (e.target === this.canvasRef.current) {
       this.props.clearZJComponentIsSelected();
+      this.setState({ multiSelectedIds: [] });
     }
   };
 
+  /**
+   * 开始拖拽生成多选框
+   */
   multiSelectStart = (e: React.MouseEvent<HTMLDivElement>) => {
     e.persist();
     e.preventDefault();
     e.stopPropagation();
     this.onClearAllComponentSelected(e);
+    // this.setState({ multiSelectedIds: [] });
     if (e.target === this.canvasRef.current) {
       this.setState({
         needMultiSelecteing: false,
@@ -116,6 +127,9 @@ class Main extends React.PureComponent<IProp, IState> {
     }
   };
 
+  /**
+   * 拖拽生成多选框中
+   */
   multiSelecting = (e: React.MouseEvent<HTMLDivElement>) => {
     e.persist();
     e.preventDefault();
@@ -136,6 +150,9 @@ class Main extends React.PureComponent<IProp, IState> {
     }
   };
 
+  /**
+   * 结束拖拽生成多选框
+   */
   multiSelectEnd = (e: React.MouseEvent<HTMLDivElement>) => {
     const {
       isMultiSelecteing,
@@ -175,6 +192,9 @@ class Main extends React.PureComponent<IProp, IState> {
     });
   };
 
+  /**
+   * 多自定义组件合并 - Redux
+   */
   onCombine = (e: MouseEvent) => {
     e.preventDefault();
     const { needMultiSelecteing, multiSelectedIds } = this.state;
@@ -182,74 +202,101 @@ class Main extends React.PureComponent<IProp, IState> {
       this.setState({ needMultiSelecteing: false });
       this.props.addMultiSelectedZJComponent(multiSelectedIds);
       this.props.multiSelectedZJComponent(multiSelectedIds);
+      this.setState({ multiSelectedIds: [] });
     }
   };
 
+  /**
+   * 取消合并 - Redux
+   */
   onCancelCombine = (e: MouseEvent, componentId: string) => {
     e.preventDefault();
     this.props.deletedMultiSelectedZJComponent(componentId);
+    this.setState({ multiSelectedIds: [] });
+  };
+
+  /**
+   * 渲染ZJ自定义组件
+   */
+  renderZJComponent = (
+    curLevelComponents: IZJComponent[],
+    components: IZJComponent[],
+    parentWidth: number,
+    parentHeight: number,
+    multiSelectedIds: string[],
+    needMultiSelecteing: boolean
+  ) => {
+    return curLevelComponents.map((c: IZJComponent) => (
+      <DragScaleWrapper
+        key={c.id}
+        parentWidth={parentWidth}
+        parentHeight={parentHeight}
+        component={c}
+        tempMultiSelectedIds={multiSelectedIds}
+        needMultiSelecteing={needMultiSelecteing}
+        onCombine={this.onCombine}
+        onCancelCombine={this.onCancelCombine}
+        customPerproties={getCustomPerproties(c)}
+      >
+        {this.renderZJComponent(
+          components.filter((child: IZJComponent) => c.children.includes(child.id)),
+          components,
+          c.size.width,
+          c.size.height,
+          multiSelectedIds,
+          needMultiSelecteing
+        )}
+      </DragScaleWrapper>
+    ));
+  };
+
+  /**
+   * 渲染多选框
+   */
+  renderMultiSelectedBox = () => {
+    const { isMultiSelecteing, multiSelectedCover } = this.state;
+    return (
+      <div
+        className=""
+        style={{
+          display: isMultiSelecteing ? 'block' : 'none',
+          border: `1px dashed #C2C2C2`,
+          backgroundColor: `rgba(194, 194, 194, 0.4)`,
+          position: 'absolute',
+          transform: `translate(${multiSelectedCover.left}px, ${multiSelectedCover.top}px)`,
+          width: multiSelectedCover.width,
+          height: multiSelectedCover.height,
+        }}
+      ></div>
+    );
   };
 
   render() {
     const { components } = this.props;
-    const {
-      width,
-      height,
-      isMultiSelecteing,
-      multiSelectedCover,
-      needMultiSelecteing,
-    } = this.state;
+    const { width, height, needMultiSelecteing, multiSelectedIds } = this.state;
+
+    const curLevelComponents = components.filter(c => c.parent === '');
     return (
       <div
         id="MainCanvas"
         ref={this.canvasRef}
         className="home_main_canvas"
         style={{ height }}
-        // onClick={}
         onMouseDown={this.multiSelectStart}
         onMouseMove={this.multiSelecting}
         onMouseUp={this.multiSelectEnd}
         onMouseLeave={this.multiSelectEnd}
       >
-        {components.map((c: IZJComponent) => (
-          <DragScaleWrapper
-            key={c.id}
-            parentWidth={width}
-            parentHeight={height}
-            component={c}
-            needMultiSelecteing={needMultiSelecteing}
-            onCombine={this.onCombine}
-            onCancelCombine={this.onCancelCombine}
-            customPerproties={getCustomPerproties(c)}
-          >
-            {c.children &&
-              c.children.map((child: IZJComponent) => (
-                <DragScaleWrapper
-                  key={child.id}
-                  parentWidth={c.size.width}
-                  parentHeight={c.size.height}
-                  component={child}
-                  needMultiSelecteing={needMultiSelecteing}
-                  onCombine={this.onCombine}
-                  onCancelCombine={this.onCancelCombine}
-                  customPerproties={getCustomPerproties(child)}
-                ></DragScaleWrapper>
-              ))}
-          </DragScaleWrapper>
-        ))}
+        {this.renderZJComponent(
+          curLevelComponents,
+          components,
+          width,
+          height,
+          multiSelectedIds,
+          needMultiSelecteing
+        )}
         {/* 多选框 */}
-        <div
-          className=""
-          style={{
-            display: isMultiSelecteing ? 'block' : 'none',
-            border: `1px dashed #C2C2C2`,
-            backgroundColor: `rgba(194, 194, 194, 0.4)`,
-            position: 'absolute',
-            transform: `translate(${multiSelectedCover.left}px, ${multiSelectedCover.top}px)`,
-            width: multiSelectedCover.width,
-            height: multiSelectedCover.height,
-          }}
-        ></div>
+        {this.renderMultiSelectedBox()}
       </div>
     );
   }

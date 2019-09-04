@@ -26,6 +26,7 @@ import { getInitPropertyValue } from '../../zj-component-perproty-item/constant'
 export const addZJComponent = ({
   type: cType,
   tag,
+  hasChildren,
   customPerproties,
 }: AddZJComponentAction) => {
   return {
@@ -38,7 +39,9 @@ export const addZJComponent = ({
       isSelected: true,
       type: cType,
       customPerproties,
+      parent: '',
       children: [],
+      hasChildren: hasChildren,
       config: {
         ...initCustomProperties(customPerproties),
       },
