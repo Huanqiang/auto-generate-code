@@ -1,6 +1,4 @@
 import {
-  AddMultiSelectedZJComponentAction,
-  DeletedMultiSelectedZJComponentAction,
   ADD_MULTI_SELECTED_ZJ_COMPONENT,
   DELETED_MULTI_SELECTED_ZJ_COMPONENT,
 } from './types';

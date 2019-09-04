@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { MenuProvider } from 'react-contexify';
@@ -23,6 +23,7 @@ type IProps = {
   parentWidth: number;
   parentHeight: number;
   multiSelectedComponents: IMultiSelectedComponents[];
+  tempMultiSelectedIds: string[];
   needMultiSelecteing: boolean;
   onCombine: (event: MouseEvent) => void;
   onCancelCombine: (event: MouseEvent, componentId: string) => void;
@@ -46,6 +47,7 @@ const DragScaleWrapper: React.FC<IProps> = ({
   needMultiSelecteing,
   multiSelectedComponents,
   customPerproties,
+  tempMultiSelectedIds,
   onCombine,
   onCancelCombine,
   changeZJComponentIsSelected,
@@ -54,8 +56,9 @@ const DragScaleWrapper: React.FC<IProps> = ({
   changeZJComponentPosition,
   multiSelectedZJComponent,
   moveMultiSelectedZJComponentAction,
+  children,
 }) => {
-  const { id, size, isSelected, type: Component, position } = component;
+  const { id, size, isSelected, type: Component, position, hasChildren } = component;
   const isInMultiSelected =
     multiSelectedComponents.filter(msc => msc.componentIds.includes(id)).length !== 0;
 
@@ -74,6 +77,15 @@ const DragScaleWrapper: React.FC<IProps> = ({
 
   const onRemove = (addLeft: number, addTop: number) => {
     const msc = multiSelectedComponents.filter(msc => msc.componentIds.includes(id));
+
+    if (tempMultiSelectedIds.length > 0) {
+      moveMultiSelectedZJComponentAction({
+        ids: tempMultiSelectedIds,
+        addLeft,
+        addTop,
+      });
+      return;
+    }
 
     if (msc.length !== 0) {
       moveMultiSelectedZJComponentAction({
@@ -107,6 +119,11 @@ const DragScaleWrapper: React.FC<IProps> = ({
     const msc = multiSelectedComponents.filter(msc => msc.componentIds.includes(id));
     setActiveZJComponent(id);
 
+    if (tempMultiSelectedIds.length > 0) {
+      multiSelectedZJComponent(tempMultiSelectedIds);
+      return;
+    }
+
     if (msc.length !== 0) {
       multiSelectedZJComponent(msc[0].componentIds);
     } else {
@@ -134,7 +151,9 @@ const DragScaleWrapper: React.FC<IProps> = ({
               verticalAlign: `middle`,
             }}
             {...customPerproties}
-          ></Component>
+          >
+            {hasChildren && children}
+          </Component>
         </div>
       </MenuProvider>
       <MultiSelectedContextMenu

@@ -2,6 +2,7 @@
 export interface AddZJComponentAction {
   type: React.FC;
   tag: string;
+  hasChildren: boolean;
   customPerproties?: IZJComponentCustomPropertyCategory[];
 }
 
