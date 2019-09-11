@@ -5,13 +5,7 @@ import { changeZJComponentsLevel } from '../../../../store/zj-components/actions
 import { ChangeZJComponentsLevel } from '../../../../store/zj-components/types';
 
 import ComponentLevelItem from './ComponentLevelItem';
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DraggableProvided,
-  DraggableStateSnapshot,
-} from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import './index.css';
 
@@ -32,7 +26,6 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
 });
 
 const getListStyle = (isDraggingOver: any, level: number) => ({
-  // background: isDraggingOver ? 'lightblue' : 'white',
   paddingLeft: level * 8,
 });
 
@@ -81,27 +74,14 @@ class ComponentLevels extends React.PureComponent<IComponentLevelProps, {}> {
     ));
   };
 
-  onChangeComponentLevel = ({
-    oldIndex,
-    newIndex,
-  }: {
-    oldIndex: number;
-    newIndex: number;
-  }) => {
-    this.props.changeComponentLevel({
-      id: this.props.components[oldIndex].id,
-      index: newIndex,
-    });
-  };
-
-  onDragEnd = (result: any) => {
+  onChangeComponentLevel = (result: any) => {
     console.log('lkkk', result);
     if (!result.destination) {
       return;
     }
-    this.onChangeComponentLevel({
-      oldIndex: result.source.index,
-      newIndex: result.destination.index,
+    this.props.changeComponentLevel({
+      id: result.draggableId,
+      index: result.destination.index,
     });
   };
 
@@ -112,7 +92,7 @@ class ComponentLevels extends React.PureComponent<IComponentLevelProps, {}> {
 
     return components.length !== 0 ? (
       <div>
-        <DragDropContext onDragEnd={this.onDragEnd}>
+        <DragDropContext onDragEnd={this.onChangeComponentLevel}>
           <Droppable droppableId="droppable" type="droppableItem">
             {(dropProvided, dropSnapshot) => (
               <div
