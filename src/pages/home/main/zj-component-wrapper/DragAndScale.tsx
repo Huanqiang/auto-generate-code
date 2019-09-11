@@ -3,8 +3,9 @@ import { useMouseMove } from '../../../../components/mouse-move';
 
 declare type IDragProps = {
   onRescale: (addWidth: number, addHeight: number) => void;
-  onSelected: () => void;
+  onSelected: (e: React.MouseEvent) => void;
   onMove: (top: number, left: number) => void;
+  onMoveEnd: ({ x, y }: { x: number; y: number }) => void;
   position: { top: number; left: number };
   isSelected: boolean;
   style?: any;
@@ -12,9 +13,21 @@ declare type IDragProps = {
 };
 
 let DragAndScale = (props: IDragProps) => {
-  let { style, position, children, onRescale, onSelected, onMove, isSelected } = props;
+  let {
+    style,
+    position,
+    children,
+    onRescale,
+    onSelected,
+    onMove,
+    onMoveEnd,
+    isSelected,
+  } = props;
   const { move: size, onMouseDown: onScaling } = useMouseMove();
-  const { move: point, onMouseDown: onMouseDraging } = useMouseMove();
+  const { move: point, onMouseDown: onMouseDraging } = useMouseMove({
+    onDragingStart: onSelected,
+    onDragingEnd: onMoveEnd,
+  });
   const scaleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,7 +39,7 @@ let DragAndScale = (props: IDragProps) => {
   }, [point]);
 
   const onDraging = (e: React.MouseEvent) => {
-    onSelected();
+    // onSelected(e);
     if (e.target === scaleRef.current) {
       return;
     }

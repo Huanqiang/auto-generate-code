@@ -9,6 +9,8 @@ import {
   CHANGE_ZJ_COMPONENT_NAME,
   MULTI_SELECTED_ZJ_COMPONENT,
   MOVE_MULTI_SELECTED_ZJ_COMPONENT,
+  INSERT_NEW_CHILD_WHIT_ID,
+  REMOVE_CHILD_BY_ID,
 } from './types';
 
 export const reducer = (state: IZJComponent[] = [], action: any) => {
@@ -93,6 +95,34 @@ export const reducer = (state: IZJComponent[] = [], action: any) => {
                 [action.payload.property]: action.payload.value,
               },
             }
+      );
+    case INSERT_NEW_CHILD_WHIT_ID:
+      return state.map(component =>
+        component.id === action.payload.parentId
+          ? {
+              ...component,
+              children: [...component.children, action.payload.id],
+            }
+          : component.id === action.payload.id
+          ? {
+              ...component,
+              parent: action.payload.parentId,
+            }
+          : component
+      );
+    case REMOVE_CHILD_BY_ID:
+      return state.map(component =>
+        component.id === action.payload.parentId
+          ? {
+              ...component,
+              children: component.children.filter(id => id !== action.payload.id),
+            }
+          : component.id === action.payload.id
+          ? {
+              ...component,
+              parent: '',
+            }
+          : component
       );
     default:
       return state;

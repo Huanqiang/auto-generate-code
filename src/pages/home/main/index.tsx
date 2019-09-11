@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import DragScaleWrapper from './drag-scale-wrapper';
+import ZJComponentWrapper from './zj-component-wrapper';
 import {
   clearZJComponentIsSelected,
   multiSelectedZJComponent,
@@ -227,10 +227,16 @@ class Main extends React.PureComponent<IProp, IState> {
     needMultiSelecteing: boolean
   ) => {
     return curLevelComponents.map((c: IZJComponent) => (
-      <DragScaleWrapper
+      <ZJComponentWrapper
         key={c.id}
-        parentWidth={parentWidth}
-        parentHeight={parentHeight}
+        parentSize={{
+          width: parentWidth,
+          height: parentHeight,
+        }}
+        parentOffset={{
+          left: this.canvasRef.current!.offsetLeft,
+          top: this.canvasRef.current!.offsetTop,
+        }}
         component={c}
         tempMultiSelectedIds={multiSelectedIds}
         needMultiSelecteing={needMultiSelecteing}
@@ -246,7 +252,7 @@ class Main extends React.PureComponent<IProp, IState> {
           multiSelectedIds,
           needMultiSelecteing
         )}
-      </DragScaleWrapper>
+      </ZJComponentWrapper>
     ));
   };
 

@@ -3,7 +3,15 @@ import React, { useState } from 'react';
 let startX = 0;
 let startY = 0;
 
-export const useMouseMove = () => {
+type Point = { x: number; y: number };
+
+type UseMouseMoveType = {
+  onDragingStart?: (e: React.MouseEvent) => void;
+  onDragingEnd?: ({ x, y }: Point) => void;
+};
+
+export const useMouseMove = (option?: UseMouseMoveType) => {
+  // const { onDragingStart, onDragingEnd } = option
   const [move, setMove] = useState({ addX: 0, addY: 0 });
 
   const draging = (e: MouseEvent) => {
@@ -26,6 +34,8 @@ export const useMouseMove = () => {
     document.removeEventListener('mouseup', dragEnd);
     document.removeEventListener('mouseleave', dragEnd);
 
+    option && option.onDragingEnd && option.onDragingEnd({ x: e.pageX, y: e.pageY });
+
     setMove({ addX: 0, addY: 0 });
   };
 
@@ -33,6 +43,8 @@ export const useMouseMove = () => {
     document.addEventListener('mousemove', draging);
     document.addEventListener('mouseup', dragEnd);
     document.addEventListener('mouseleave', dragEnd);
+
+    option && option.onDragingStart && option.onDragingStart(e);
 
     startX = e.pageX;
     startY = e.pageY;

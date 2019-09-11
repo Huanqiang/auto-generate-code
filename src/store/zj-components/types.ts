@@ -48,6 +48,16 @@ export interface MoveMultiSelectedZJComponentAction {
   addLeft: number;
 }
 
+export interface InsertNewChildAction {
+  parentId: string;
+  id: string;
+}
+
+export interface RemoveChildAction {
+  parentId: string;
+  id: string;
+}
+
 // Describing the different ACTION NAMES available
 export const ADD_ZJ_COMPONENT: string = 'ADD_ZJ_COMPONENT';
 export const CHANGE_ZJ_COMPONENT_SIZE: string = 'CHANGE_ZJ_COMPONENT_SIZE';
@@ -61,6 +71,8 @@ export const CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY: string =
   'CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY';
 export const MOVE_MULTI_SELECTED_ZJ_COMPONENT: string =
   'MOVE_MULTI_SELECTED_ZJ_COMPONENT';
+export const INSERT_NEW_CHILD_WHIT_ID: string = 'INSERT_NEW_CHILD_WHIT_ID';
+export const REMOVE_CHILD_BY_ID: string = 'REMOVE_CHILD_BY_ID';
 
 export interface AddZJComponentPlayload {
   type: typeof ADD_ZJ_COMPONENT;

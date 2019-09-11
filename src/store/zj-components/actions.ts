@@ -9,6 +9,8 @@ import {
   ChangeZJComponentCustomProperty,
   MultiSelectedZJComponentAction,
   MoveMultiSelectedZJComponentAction,
+  InsertNewChildAction,
+  RemoveChildAction,
   ADD_ZJ_COMPONENT,
   CHANGE_ZJ_COMPONENT_ISSELETED,
   CHANGE_ZJ_COMPONENT_SIZE,
@@ -19,6 +21,8 @@ import {
   CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY,
   MULTI_SELECTED_ZJ_COMPONENT,
   MOVE_MULTI_SELECTED_ZJ_COMPONENT,
+  INSERT_NEW_CHILD_WHIT_ID,
+  REMOVE_CHILD_BY_ID,
 } from './types';
 
 import { getInitPropertyValue } from '../../zj-component-perproty-item/constant';
@@ -139,6 +143,16 @@ export const changeZJComponentCustomProperty = ({
 }: ChangeZJComponentCustomProperty) => ({
   type: CHANGE_ZJ_COMPONENT_CUSTOM_PROPERTY,
   payload: { id, property, value },
+});
+
+export const insertNewChildById = ({ parentId, id }: InsertNewChildAction) => ({
+  type: INSERT_NEW_CHILD_WHIT_ID,
+  payload: { parentId, id },
+});
+
+export const removeChildById = ({ parentId, id }: RemoveChildAction) => ({
+  type: REMOVE_CHILD_BY_ID,
+  payload: { parentId, id },
 });
 
 const initCustomProperties = (

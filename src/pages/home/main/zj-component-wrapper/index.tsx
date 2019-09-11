@@ -10,39 +10,44 @@ import {
   changeZJComponentPosition,
   multiSelectedZJComponent,
   moveMultiSelectedZJComponentAction,
+  insertNewChildById,
 } from '../../../../store/zj-components/actions';
 import {
   ChangeZJComponentIsSelectedAction,
   ChangeZJComponentSizeAction,
   ChangeZJComponentPositionAction,
   MoveMultiSelectedZJComponentAction,
+  InsertNewChildAction,
 } from '../../../../store/zj-components/types';
 import { setActiveZJComponent } from '../../../../store/active-zj-component/actions';
 
 type IProps = {
-  parentWidth: number;
-  parentHeight: number;
+  components: IZJComponent[];
+  parentSize: { width: number; height: number };
+  parentOffset: { left: number; top: number };
   multiSelectedComponents: IMultiSelectedComponents[];
   tempMultiSelectedIds: string[];
   needMultiSelecteing: boolean;
   onCombine: (event: MouseEvent) => void;
   onCancelCombine: (event: MouseEvent, componentId: string) => void;
-  changeZJComponentIsSelected: (playload: ChangeZJComponentIsSelectedAction) => void;
+  changeZJComponentIsSelected: (payload: ChangeZJComponentIsSelectedAction) => void;
   setActiveZJComponent: (id: string) => void;
-  changeZJComponentSize: (playload: ChangeZJComponentSizeAction) => void;
-  changeZJComponentPosition: (playload: ChangeZJComponentPositionAction) => void;
+  changeZJComponentSize: (payload: ChangeZJComponentSizeAction) => void;
+  changeZJComponentPosition: (payload: ChangeZJComponentPositionAction) => void;
   moveMultiSelectedZJComponentAction: (
     playload: MoveMultiSelectedZJComponentAction
   ) => void;
   multiSelectedZJComponent: (ids: string[]) => void;
+  insertNewChildById: (payload: InsertNewChildAction) => void;
   customPerproties: object;
 } & {
   component: IZJComponent;
 };
 
 const DragScaleWrapper: React.FC<IProps> = ({
-  parentWidth,
-  parentHeight,
+  components,
+  parentSize,
+  parentOffset,
   component,
   needMultiSelecteing,
   multiSelectedComponents,
@@ -56,6 +61,7 @@ const DragScaleWrapper: React.FC<IProps> = ({
   changeZJComponentPosition,
   multiSelectedZJComponent,
   moveMultiSelectedZJComponentAction,
+  insertNewChildById,
   children,
 }) => {
   const { id, size, isSelected, type: Component, position, hasChildren } = component;
@@ -75,7 +81,7 @@ const DragScaleWrapper: React.FC<IProps> = ({
     });
   };
 
-  const onRemove = (addLeft: number, addTop: number) => {
+  const onRemoving = (addLeft: number, addTop: number) => {
     const msc = multiSelectedComponents.filter(msc => msc.componentIds.includes(id));
 
     if (tempMultiSelectedIds.length > 0) {
@@ -94,8 +100,8 @@ const DragScaleWrapper: React.FC<IProps> = ({
         addTop,
       });
     } else {
-      const maxWidth = parentWidth - size.width;
-      const maxHeight = parentHeight - size.height;
+      const maxWidth = parentSize.width - size.width;
+      const maxHeight = parentSize.height - size.height;
       const newPosition = {
         left:
           position.left + addLeft < 0
@@ -115,7 +121,27 @@ const DragScaleWrapper: React.FC<IProps> = ({
     }
   };
 
-  const onSelected = () => {
+  const onMoveEnd = ({ x, y }: { x: number; y: number }) => {
+    const top = y - parentOffset.top;
+    const left = x - parentOffset.left;
+    const parentNodes = components.filter(
+      comp =>
+        comp.id !== component.id && // 排除自己
+        !component.children.includes(comp.id) && // 排除子元素
+        comp.hasChildren && // 保证组件是可以插入子组件的
+        comp.position.top < top &&
+        comp.position.left < left &&
+        comp.position.left + comp.size.width > left &&
+        comp.position.top + comp.size.height > top
+    );
+    const parentNode = parentNodes && parentNodes.length !== 0 && parentNodes[0];
+
+    parentNode && insertNewChildById({ parentId: parentNode.id, id: component.id });
+  };
+
+  const onSelected = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     const msc = multiSelectedComponents.filter(msc => msc.componentIds.includes(id));
     setActiveZJComponent(id);
 
@@ -135,7 +161,8 @@ const DragScaleWrapper: React.FC<IProps> = ({
     <DragAndScale
       position={position}
       onRescale={onRescale}
-      onMove={onRemove}
+      onMove={onRemoving}
+      onMoveEnd={onMoveEnd}
       isSelected={isSelected}
       onSelected={onSelected}
     >
@@ -169,6 +196,7 @@ const DragScaleWrapper: React.FC<IProps> = ({
 
 const mapStateToProps = (state: any) => ({
   multiSelectedComponents: state.multiSelectedComponents,
+  components: state.components,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -183,6 +211,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(multiSelectedZJComponent({ ids })),
   moveMultiSelectedZJComponentAction: (payload: MoveMultiSelectedZJComponentAction) =>
     dispatch(moveMultiSelectedZJComponentAction(payload)),
+  insertNewChildById: (payload: InsertNewChildAction) =>
+    dispatch(insertNewChildById(payload)),
 });
 
 export default connect(
