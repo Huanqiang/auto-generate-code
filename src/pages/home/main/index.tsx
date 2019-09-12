@@ -219,14 +219,13 @@ class Main extends React.PureComponent<IProp, IState> {
    * 渲染ZJ自定义组件
    */
   renderZJComponent = (
-    curLevelComponents: IZJComponent[],
     components: IZJComponent[],
     parentWidth: number,
     parentHeight: number,
     multiSelectedIds: string[],
     needMultiSelecteing: boolean
   ) => {
-    return curLevelComponents.map((c: IZJComponent) => (
+    return components.map((c: IZJComponent) => (
       <ZJComponentWrapper
         key={c.id}
         parentSize={{
@@ -245,8 +244,7 @@ class Main extends React.PureComponent<IProp, IState> {
         customPerproties={getCustomPerproties(c)}
       >
         {this.renderZJComponent(
-          components.filter((child: IZJComponent) => c.children.includes(child.id)),
-          components,
+          c.children,
           c.size.width,
           c.size.height,
           multiSelectedIds,
@@ -281,7 +279,6 @@ class Main extends React.PureComponent<IProp, IState> {
     const { components } = this.props;
     const { width, height, needMultiSelecteing, multiSelectedIds } = this.state;
 
-    const curLevelComponents = components.filter(c => c.parent === '');
     return (
       <div
         id="MainCanvas"
@@ -294,7 +291,6 @@ class Main extends React.PureComponent<IProp, IState> {
         onMouseLeave={this.multiSelectEnd}
       >
         {this.renderZJComponent(
-          curLevelComponents,
           components,
           width,
           height,

@@ -11,7 +11,7 @@ import './index.css';
 
 type IComponentLevelProps = {
   components: IZJComponent[];
-  changeComponentLevel: ({ id, index }: ChangeZJComponentsLevel) => void;
+  changeComponentLevel: (payload: ChangeZJComponentsLevel) => void;
 };
 
 const getItemStyle = (isDragging: any, draggableStyle: any) => ({
@@ -30,12 +30,8 @@ const getListStyle = (isDraggingOver: any, level: number) => ({
 });
 
 class ComponentLevels extends React.PureComponent<IComponentLevelProps, {}> {
-  renderTree = (
-    curLevelComponents: IZJComponent[],
-    components: IZJComponent[],
-    level: number
-  ) => {
-    return curLevelComponents.map((comp, index) => (
+  renderTree = (components: IZJComponent[], level: number) => {
+    return components.map((comp, index) => (
       <Draggable draggableId={comp.id} key={comp.id} index={index}>
         {(dragProvided, dragSnapshot) => (
           <div>
@@ -56,11 +52,7 @@ class ComponentLevels extends React.PureComponent<IComponentLevelProps, {}> {
                       ref={droppableProvided.innerRef}
                       style={getListStyle(droppableSnapshot.isDraggingOver, level)}
                     >
-                      {this.renderTree(
-                        components.filter(c => c.parent === comp.id),
-                        components,
-                        level + 1
-                      )}
+                      {this.renderTree(comp.children, level + 1)}
                       {droppableProvided.placeholder}
                     </div>
                   )}
@@ -81,14 +73,13 @@ class ComponentLevels extends React.PureComponent<IComponentLevelProps, {}> {
     }
     this.props.changeComponentLevel({
       id: result.draggableId,
+      parentId: result.type === 'droppableItem' ? undefined : result.type,
       index: result.destination.index,
     });
   };
 
   render() {
     const { components } = this.props;
-
-    const firstLevelComponents = components.filter(c => c.parent === '');
 
     return components.length !== 0 ? (
       <div>
@@ -99,7 +90,7 @@ class ComponentLevels extends React.PureComponent<IComponentLevelProps, {}> {
                 ref={dropProvided.innerRef}
                 style={getListStyle(dropSnapshot.isDraggingOver, 1)}
               >
-                {this.renderTree(firstLevelComponents, components, 1)}
+                {this.renderTree(components, 1)}
                 {dropProvided.placeholder}
               </div>
             )}
@@ -219,8 +210,8 @@ const mapStateToProps = (props: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  changeComponentLevel: ({ id, index }: ChangeZJComponentsLevel) =>
-    dispatch(changeZJComponentsLevel({ id, index })),
+  changeComponentLevel: (payload: ChangeZJComponentsLevel) =>
+    dispatch(changeZJComponentsLevel(payload)),
 });
 
 export default connect(

@@ -48,8 +48,6 @@ export const useResizeScale = (
       height: addHeight,
     });
 
-    console.log(size);
-
     return false;
   };
 

@@ -20,6 +20,7 @@ import {
   InsertNewChildAction,
 } from '../../../../store/zj-components/types';
 import { setActiveZJComponent } from '../../../../store/active-zj-component/actions';
+import { findComponent } from '../../../../utils/zjcomponentOperations';
 
 type IProps = {
   components: IZJComponent[];
@@ -124,10 +125,22 @@ const DragScaleWrapper: React.FC<IProps> = ({
   const onMoveEnd = ({ x, y }: { x: number; y: number }) => {
     const top = y - parentOffset.top;
     const left = x - parentOffset.left;
+
+    const parentComponent = findComponent(components, component.parent);
+    if (
+      parentComponent &&
+      parentComponent.position.top < top &&
+      parentComponent.position.left < left &&
+      parentComponent.position.left + parentComponent.size.width > left &&
+      parentComponent.position.top + parentComponent.size.height > top
+    ) {
+      return;
+    }
+
     const parentNodes = components.filter(
       comp =>
         comp.id !== component.id && // 排除自己
-        !component.children.includes(comp.id) && // 排除子元素
+        // !component.children.includes(comp.id) && // 排除子元素
         comp.hasChildren && // 保证组件是可以插入子组件的
         comp.position.top < top &&
         comp.position.left < left &&

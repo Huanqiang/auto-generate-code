@@ -16,7 +16,7 @@ const SideItem: React.FC<Props> = ({ componentClass, addZJComponent }) => {
     addZJComponent({
       type: componentClass.type,
       tag: componentClass.tag,
-      hasChildren: !!componentClass.children,
+      hasChildren: !!componentClass.hasChildren,
       customPerproties: componentClass.customPerproties,
     });
   };

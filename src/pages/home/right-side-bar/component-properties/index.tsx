@@ -8,6 +8,7 @@ import {
 import { ChangeZJComponentCustomProperty } from '../../../../store/zj-components/types';
 import initPerportyItem from '../../../../zj-component-perproty-item';
 import NameProperty from '../../../../zj-component-perproty-item/NameProperty';
+import { findComponent } from '../../../../utils/zjcomponentOperations';
 
 type IComponentPropertiesProps = {
   component: IZJComponent;
@@ -54,8 +55,7 @@ const ComponentProperties: React.FC<IComponentPropertiesProps> = ({
 };
 
 const mapStateToProps = (state: any) => ({
-  component:
-    state.components.filter((c: any) => c.id === state.activeZJComponent)[0] || undefined,
+  component: findComponent(state.components, state.activeZJComponent)!,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

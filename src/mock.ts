@@ -14,7 +14,7 @@ export const components: IComponentClass[] = [
     title: '画布',
     type: ZJComponentClasses.ZJDiv,
     img: '',
-    children: [],
+    hasChildren: true,
     customPerproties: [
       {
         property: 'backgroundColor',

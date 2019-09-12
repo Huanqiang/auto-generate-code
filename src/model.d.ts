@@ -4,7 +4,8 @@ declare interface IComponentClass {
   title: string;
   type: React.FC<IDragProps>;
   img: string;
-  children?: React.ReactNode;
+  hasChildren?: boolean;
+  // children?: React.ReactNode;
   customPerproties?: IZJComponentCustomPropertyCategory[];
 }
 
@@ -16,12 +17,13 @@ declare interface IZJComponent {
   position: { top: number; left: number };
   isSelected: false;
   parent: string;
-  children: string[];
+  children: IZJComponent[];
   hasChildren: boolean;
   config: {
     [index: string]: string | number | boolean | any;
   };
   customPerproties: IZJComponentCustomPropertyCategory[];
+  [index: string]: any;
 }
 
 declare interface IMultiSelectedComponents {

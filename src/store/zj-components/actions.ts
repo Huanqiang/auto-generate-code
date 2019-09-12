@@ -123,9 +123,13 @@ export const clearZJComponentIsSelected = () => ({
   payload: {},
 });
 
-export const changeZJComponentsLevel = ({ id, index }: ChangeZJComponentsLevel) => ({
+export const changeZJComponentsLevel = ({
+  id,
+  parentId,
+  index,
+}: ChangeZJComponentsLevel) => ({
   type: CHANGE_ZJ_COMPONENT_LEVEL,
-  payload: { id, index },
+  payload: { id, parentId, index },
 });
 
 export const changeZJComponentName = ({ id, name }: ChangeZJComponentsName) => ({

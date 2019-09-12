@@ -28,6 +28,7 @@ export interface MultiSelectedZJComponentAction {
 
 export interface ChangeZJComponentsLevel {
   id: string;
+  parentId: string;
   index: number;
 }
 
