@@ -11,7 +11,6 @@ type UseMouseMoveType = {
 };
 
 export const useMouseMove = (option?: UseMouseMoveType) => {
-  // const { onDragingStart, onDragingEnd } = option
   const [move, setMove] = useState({ addX: 0, addY: 0 });
 
   const draging = (e: MouseEvent) => {
@@ -35,15 +34,13 @@ export const useMouseMove = (option?: UseMouseMoveType) => {
     document.removeEventListener('mouseleave', dragEnd);
 
     option && option.onDragingEnd && option.onDragingEnd({ x: e.pageX, y: e.pageY });
-
-    setMove({ addX: 0, addY: 0 });
   };
 
   const onMouseDown = (e: React.MouseEvent) => {
     document.addEventListener('mousemove', draging);
     document.addEventListener('mouseup', dragEnd);
     document.addEventListener('mouseleave', dragEnd);
-
+    setMove({ addX: 0, addY: 0 });
     option && option.onDragingStart && option.onDragingStart(e);
 
     startX = e.pageX;

@@ -1,11 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 let startX = 0;
 let startY = 0;
 
-export const useMouseMove = () => {
+type Point = { x: number; y: number };
+
+type UseMouseMoveType = {
+  onDragingStart?: (e: React.MouseEvent) => void;
+  onDragingEnd?: ({ x, y }: Point) => void;
+};
+
+export const useMouseMove = (option?: UseMouseMoveType) => {
   const [move, setMove] = useState({ addX: 0, addY: 0 });
   const [isMouseDown, setIsMouseDown] = useState(false);
+
+  const draging = useCallback(
+    (e: MouseEvent) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (!isMouseDown) {
+        return;
+      }
+
+      const addX = e.pageX - startX;
+      const addY = e.pageY - startY;
+      if (addX === 0 && addY === 0) {
+        return;
+      }
+
+      setMove({ addX, addY });
+      startX = e.pageX;
+      startY = e.pageY;
+      return false;
+    },
+    [isMouseDown]
+  );
+
+  const dragEnd = useCallback(
+    (e: MouseEvent) => {
+      // if (!isMouseDown) {
+      //   return;
+      // }
+
+      e.stopPropagation();
+      e.preventDefault();
+
+      console.log('dragEnd isMouseDown', isMouseDown);
+
+      option && option.onDragingEnd && option.onDragingEnd({ x: e.pageX, y: e.pageY });
+
+      setIsMouseDown(prev => false);
+      setMove({ addX: 0, addY: 0 });
+    },
+    [isMouseDown, option]
+  );
+
+  const onMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      setIsMouseDown(true);
+
+      option && option.onDragingStart && option.onDragingStart(e);
+
+      startX = e.pageX;
+      startY = e.pageY;
+    },
+    [option]
+  );
 
   useEffect(() => {
     document.addEventListener('mousemove', draging);
@@ -17,41 +77,7 @@ export const useMouseMove = () => {
       document.removeEventListener('mouseup', dragEnd);
       document.removeEventListener('mouseleave', dragEnd);
     };
-  });
-
-  const draging = (e: MouseEvent) => {
-    e.preventDefault();
-    if (!isMouseDown) {
-      return;
-    }
-
-    const addX = e.pageX - startX;
-    const addY = e.pageY - startY;
-    if (addX === 0 && addY === 0) {
-      return;
-    }
-
-    setMove({ addX, addY });
-    startX = e.pageX;
-    startY = e.pageY;
-    return false;
-  };
-
-  const dragEnd = (e: MouseEvent) => {
-    if (!isMouseDown) {
-      return;
-    }
-
-    setIsMouseDown(false);
-    setMove({ addX: 0, addY: 0 });
-  };
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    setIsMouseDown(true);
-
-    startX = e.pageX;
-    startY = e.pageY;
-  };
+  }, [draging, dragEnd]);
 
   return { move, onMouseDown };
 };

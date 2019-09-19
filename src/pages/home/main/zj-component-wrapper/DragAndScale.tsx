@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { useMouseMove } from '../../../../components/mouse-move';
+import React, { useEffect, useRef, useCallback } from 'react';
+import { useMouseMove } from '../../../../components/mouse-move/index';
 
 declare type IDragProps = {
   onRescale: (addWidth: number, addHeight: number) => void;
@@ -30,16 +30,23 @@ let DragAndScale = (props: IDragProps) => {
   });
   const scaleRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const rescale = useCallback(() => {
     onRescale(size.addX, size.addY);
   }, [size]);
 
-  useEffect(() => {
+  const move = useCallback(() => {
     onMove(point.addX, point.addY);
   }, [point]);
 
+  useEffect(() => {
+    rescale();
+  }, [rescale]);
+
+  useEffect(() => {
+    move();
+  }, [move]);
+
   const onDraging = (e: React.MouseEvent) => {
-    // onSelected(e);
     if (e.target === scaleRef.current) {
       return;
     }

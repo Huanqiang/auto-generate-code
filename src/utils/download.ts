@@ -1,5 +1,5 @@
 // 下载文件方法
-export const htmlDownload = function(content: string, filename = 'index.html') {
+export const htmlDownload = function(content: string, filename = 'index.js') {
   var eleLink = document.createElement('a');
   eleLink.download = filename;
   eleLink.style.display = 'none';

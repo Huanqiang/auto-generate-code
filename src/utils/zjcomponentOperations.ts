@@ -80,6 +80,8 @@ export const resetChildPositionWhenInsert = (
   const left = child.position.left - parentPosition.left;
   const top = child.position.top - parentPosition.top;
 
+  console.log(left, top);
+
   return changeComponentInfo(child, {
     parent: parentId,
     position: { left: left < 0 ? 0 : left, top: top < 0 ? 0 : top },

@@ -17,7 +17,6 @@ import {
   insertComponent,
   deleteComponent,
   findComponent,
-  changeComponentInfo,
   resetChildPositionWhenInsert,
 } from '../../utils/zjcomponentOperations';
 

@@ -16,18 +16,24 @@ const ZJButton: React.FC<IZJButtonProps & IZJStyleProps> = ({
   backgroundColor,
   borderRadius,
 }) => {
+  const testClick = () => {
+    console.log('other');
+  };
+
   const consoleX = () => {
+    testClick();
     console.log("i'm a button");
   };
   return (
     <div
+      className="zj-button"
       style={{
         ...style,
         backgroundColor,
         borderRadius,
         color: textColor,
         fontSize,
-        cursor: `pointer`,
+        cursor: 'pointer',
       }}
       onClick={consoleX}
     >
